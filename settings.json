@@ -1,5 +1,8 @@
 
 {
+    "input_file_name": "pn_junction.tiff",
+    "output_file_name": "pn_junction_output_image",
     "scanning_rate": 1e6,
-    "image length": 256e6
+    "image length": 256e6,
+    "color_map": "viridis"
 }
