@@ -36,8 +36,8 @@ def read_tiff(
     return tiff_file.asarray()
 
 def create_coordinate_grid(
-                    scanning_rate : float,  #number of aquired points per unit length [m^(-1)], is set manually in the AFM
-                    image_width : float  #total length of the image [m], is set manually in the AFM
+                    scanning_rate : float, #Number of aquired points per unit length [m^(-1)], is set manually in the AFM
+                    image_width : float #Total length of the image [m], is set manually in the AFM
                     ) -> tuple[np.ndarray[float],...]:
     """
     Creates the coordinate grid in real space.
@@ -64,15 +64,14 @@ def create_coordinate_grid(
     N_points = int(round(image_width * scanning_rate))
     if not isinstance(N_points, int):
         raise ValueError("Scanning rate and image width product is not an integer number. Please check if those values are inserted correctly")
-    else:
-        scan_direction = np.linspace(0, image_width, N_points)
-        return np.meshgrid(scan_direction,scan_direction)
+    scan_direction = np.linspace(0, image_width, N_points)
+    return np.meshgrid(scan_direction,scan_direction)
 
 def plot_afm_image(
         output_file_name : str,
-        height_values : np.ndarray[float], 
-        real_space_coordinates, 
-        color_map='grey'):
+        height_values : np.ndarray[float], #This is a 2-d array
+        real_space_coordinates, #This is a couple of 2-d arrays
+        color_map='Greys') -> None:
     """
     Plots AFM data as a 2D color map.
 
@@ -85,10 +84,13 @@ def plot_afm_image(
     height_values: ndarray[float]
                    2-d grid with z height values to be represented in the image.
     real_space_coordinates: tuple(ndarray[float])
-                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel. 
-                      
+                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
+    color_map: str
+               Set of colors to plot the image. Default is 'Greys'.
     """
-
+    if color_map not in plt.colormaps():
+        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+    
     x,y = real_space_coordinates
     real_space_map = [x.min(), x.max(), y.max(), y.min()]
 
