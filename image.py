@@ -36,9 +36,9 @@ def read_tiff(
     return tiff_file.asarray()
 
 def create_coordinate_grid(
-                    scanning_rate : float, #Number of aquired points per unit length [m^(-1)], is set manually in the AFM
-                    image_width : float #Total length of the image [m], is set manually in the AFM
-                    ) -> tuple[np.ndarray[float],...]:
+    scanning_rate : float, #Number of aquired points per unit length [m^(-1)], is set manually in the AFM
+    image_width : float #Total length of the image [m], is set manually in the AFM
+    ) -> tuple[np.ndarray[float],...]:
     """
     Creates the coordinate grid in real space.
 
@@ -68,10 +68,10 @@ def create_coordinate_grid(
     return np.meshgrid(scan_direction,scan_direction)
 
 def plot_afm_image(
-        output_file_name : str,
-        height_values : np.ndarray[float], #This is a 2-d array
-        real_space_coordinates, #This is a couple of 2-d arrays
-        color_map='Greys') -> None:
+    output_file_name : str,
+    height_values : np.ndarray[float], #This is a 2-d array
+    real_space_coordinates, #This is a couple of 2-d arrays
+    color_map='Greys') -> None:
     """
     Plots AFM data as a 2D color map.
 
