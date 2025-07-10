@@ -8,6 +8,23 @@ def mean_plane_subtraction(
     height_values : np.ndarray[float],
     coordinate_grid : tuple[np.ndarray[float]]
     ) -> np.ndarray[float]:
+    """
+    Cancels out the planar slope of the image
+
+    Starting from the plane equation z = a*x + b*y + c, this function subtracts z = A*x + B*y to the height values of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the plane and the height values. Note that this function does not subtract the whole plane z = A*x + B*y + C.
+
+    Parameters
+    ----------
+    height_values: ndarray[float]
+                   2-d grid with height values.
+    coordinate_grid: tuple(ndarray[float])
+                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
+
+    Returns
+    -------
+    ndarray[float]
+                   2-d grid with the height values subtracted by the common plane.
+    """
     X, Y = coordinate_grid
     x_flat = X.ravel()
     y_flat = Y.ravel()
@@ -20,11 +37,41 @@ def mean_plane_subtraction(
 def shift_min(
     height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
+    """
+    Sets the minimum height value to zero.
+
+    Finds the minimum height inside the height_values array and subtracts its value to each element of the array, thus shifting the image such that the minimum height corresponds to zero.
+    
+    Parameters
+    ----------
+    height_values: ndarray[float]
+                   2-d grid with height values.
+
+    Returns
+    -------
+    ndarray[float]
+                   2-d grid with the height values subtracted by the minimum height value. 
+    """
     minimum_height = np.min(height_values)
     return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
     height_values : np.ndarray
     ) -> np.ndarray:
+    """
+    Sets the mean height value to zero.
+
+    Computes the mean height inside the height_values array and subtracts its value to each element of the array, thus shifting the image such that the mean height corresponds to zero.
+    
+    Parameters
+    ----------
+    height_values: ndarray[float]
+                   2-d grid with height values.
+
+    Returns
+    -------
+    ndarray[float]
+                   2-d grid with the height values subtracted by the mean height value. 
+    """
     mean_height = np.mean(height_values)
     return height_values- mean_height #the mean height is set to zero
