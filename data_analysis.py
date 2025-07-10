@@ -4,7 +4,7 @@ import image
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def mean_plane_subtraction(
+def common_plane_subtraction(
     height_values : np.ndarray[float],
     coordinate_grid : tuple[np.ndarray[float]]
     ) -> np.ndarray[float]:
