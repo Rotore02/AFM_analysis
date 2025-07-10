@@ -127,7 +127,7 @@ def plot_3d_image(
     x,y = coordinate_grid
     fig = plt.figure(figsize=(10, 6))
     ax = fig.add_subplot(111, projection='3d')
-    ax.plot_surface(x, y, height_values, alpha=0.9, label='Dati', cmap='viridis')
+    ax.plot_surface(x, y, height_values, alpha=0.9, label='Dati', cmap=color_map)
     ax.set_xlabel('X (µm)')
     ax.set_ylabel('Y (µm)')
     ax.set_zlabel('Z (nm)')
