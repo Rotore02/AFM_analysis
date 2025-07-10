@@ -67,7 +67,7 @@ def create_coordinate_grid(
     scan_direction = np.linspace(0, image_width, N_points)
     return np.meshgrid(scan_direction,scan_direction)
 
-def plot_afm_image(
+def plot_2d_image(
     output_file_name : str,
     height_values : np.ndarray[float], #This is a 2-d array
     real_space_coordinates, #This is a couple of 2-d arrays
@@ -75,7 +75,7 @@ def plot_afm_image(
     """
     Plots AFM data as a 2D color map.
 
-    Plots the height values stored in the 2-d grid labeling the x and y axis of the plot with the coordinates stored in real_space_coordinates
+    Makes a 2-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the coordinates stored in real_space_coordinates
 
     Parameters:
     -----------
@@ -101,6 +101,50 @@ def plot_afm_image(
     ax.set_ylabel('Y (µm)')
 
     color_bar = plt.colorbar(im, ax=ax)
+    color_bar.set_label("Height (nm)")
+
+    plt.tight_layout()
+    plt.savefig(f"output_files/{output_file_name}")
+
+def plot_3d_image(
+    output_file_name : str,
+    height_values : np.ndarray[float], #This is a 2-d array
+    real_space_coordinates, #This is a couple of 2-d arrays
+    color_map='Greys') -> None:
+    """
+    Plots AFM data as a 3D color map.
+
+    Makes a 3-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the coordinates stored in real_space_coordinates
+
+    Parameters:
+    -----------
+    output_file_name: str
+                      Name of the output file that will be saved in the folder 'output_files/'.
+    height_values: ndarray[float]
+                   2-d grid with z height values to be represented in the image.
+    real_space_coordinates: tuple(ndarray[float])
+                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
+    color_map: str
+               Set of colors to plot the image. Default is 'Greys'.
+    """
+    if color_map not in plt.colormaps():
+        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+    
+    x,y = real_space_coordinates
+
+
+    fig = plt.figure(figsize=(10, 6))
+    ax = fig.add_subplot(111, projection='3d')
+
+    ax.plot_surface(x, y, height_values, alpha=0.9, label='Dati', cmap='viridis')
+
+
+    ax.set_title("Superficie corretta + piano di fit")
+    ax.set_xlabel('X (µm)')
+    ax.set_ylabel('Y (µm)')
+    ax.set_zlabel('Z (µm)')
+
+    color_bar = plt.colorbar(ax, ax=ax)
     color_bar.set_label("Height (nm)")
 
     plt.tight_layout()
