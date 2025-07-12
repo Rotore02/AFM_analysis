@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 def common_plane_subtraction(
-    height_values : np.ndarray[float],
-    coordinate_grid : tuple[np.ndarray[float]]
+    height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
     """
     Cancels out the planar slope of the image
@@ -17,15 +16,16 @@ def common_plane_subtraction(
     ----------
     height_values: ndarray[float]
                    2-d grid with height values.
-    coordinate_grid: tuple(ndarray[float])
-                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
 
     Returns
     -------
     ndarray[float]
                    2-d grid with the height values subtracted by the common plane.
     """
-    X, Y = coordinate_grid
+    nx, ny = height_values.shape
+    x = np.arange(nx)
+    y = np.arange(ny) #initialize the x and y axis as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
+    X, Y = np.meshgrid(x, y) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
     x_flat = X.ravel()
     y_flat = Y.ravel()
     z_flat = height_values.ravel()
@@ -75,3 +75,19 @@ def shift_mean(
     """
     mean_height = np.mean(height_values)
     return height_values- mean_height #the mean height is set to zero
+
+
+    
+
+#def linear(P,x):
+ #   return 1/(((80*50*10**(-5)*P[0])/20)*(x - P[1]))
+
+#realdata = RealData(gate_voltages[2:7], resistance[2:7])
+#model = Model(linear)
+#odr = ODR(realdata, model, beta0=[10**(-1), 0.5])
+#output = odr.run()
+#mu, V_t = output.beta[0], output.beta[1]
+#d_mu, d_V_t = output.sd_beta[0], output.sd_beta[1]
+
+
+

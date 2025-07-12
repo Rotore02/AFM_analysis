@@ -13,7 +13,7 @@ height_values = image.read_tiff(settings["file_specifications"]["input_file_name
 coordinate_grid = image.create_coordinate_grid(settings["file_specifications"]["scanning_rate"], settings["file_specifications"]["image_length"])
 
 if settings["data_analysis"]["common_plane_subtraction"].lower() == "yes":
-    height_values = data_analysis.common_plane_subtraction(height_values, coordinate_grid)
+    height_values = data_analysis.common_plane_subtraction(height_values)
 elif settings["data_analysis"]["common_plane_subtraction"].lower() == "no":
     height_values = height_values
 else:
