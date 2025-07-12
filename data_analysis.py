@@ -23,16 +23,41 @@ def common_plane_subtraction(
                    2-d grid with the height values subtracted by the common plane.
     """
     nx, ny = height_values.shape
-    x = np.arange(nx)
-    y = np.arange(ny) #initialize the x and y axis as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
-    X, Y = np.meshgrid(x, y) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
+    x_ax = np.arange(nx)
+    y_ax = np.arange(ny) #initialize the x and y axis as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
+    X, Y = np.meshgrid(x_ax, y_ax) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
     x_flat = X.ravel()
     y_flat = Y.ravel()
     z_flat = height_values.ravel()
     A = np.vstack([x_flat, y_flat, np.ones_like(x_flat)]).T 
     coeffs, _, _, _ = np.linalg.lstsq(A, z_flat)
     a,b,c = coeffs
-    return height_values - (a*X + b*Y)
+    return height_values - (a*X + b*Y + c)
+
+def mean_drift_subtraction(
+    height_values : np.ndarray[float]
+    ) -> np.ndarray[float]:
+    nx, ny = height_values.shape
+    x_ax = np.arange(nx)
+    y_ax = np.arange(ny)
+    A = np.vstack([x_ax, np.ones_like(x_ax)]).T
+    for y in y_ax:
+        mean_height = np.mean(height_values[y])
+        height_values[y] = height_values[y] - mean_height
+    return height_values
+
+def line_drift_subtraction(
+    height_values : np.ndarray[float]
+    ) -> np.ndarray[float]:
+    nx, ny = height_values.shape
+    x_ax = np.arange(nx)
+    y_ax = np.arange(ny)
+    A = np.vstack([x_ax, np.ones_like(x_ax)]).T
+    for y in y_ax:
+        coeffs, _, _, _ = np.linalg.lstsq(A,height_values[y])
+        m,q = coeffs
+        height_values[y] = height_values[y] - (m*x_ax + q)
+    return height_values
 
 def shift_min(
     height_values : np.ndarray[float]
@@ -56,8 +81,8 @@ def shift_min(
     return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
-    height_values : np.ndarray
-    ) -> np.ndarray:
+    height_values : np.ndarray[float]
+    ) -> np.ndarray[float]:
     """
     Sets the mean height value to zero.
 
@@ -76,18 +101,6 @@ def shift_mean(
     mean_height = np.mean(height_values)
     return height_values- mean_height #the mean height is set to zero
 
-
-    
-
-#def linear(P,x):
- #   return 1/(((80*50*10**(-5)*P[0])/20)*(x - P[1]))
-
-#realdata = RealData(gate_voltages[2:7], resistance[2:7])
-#model = Model(linear)
-#odr = ODR(realdata, model, beta0=[10**(-1), 0.5])
-#output = odr.run()
-#mu, V_t = output.beta[0], output.beta[1]
-#d_mu, d_V_t = output.sd_beta[0], output.sd_beta[1]
 
 
 
