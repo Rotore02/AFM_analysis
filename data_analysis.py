@@ -7,9 +7,9 @@ def common_plane_subtraction(
     height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
     """
-    Cancels out the planar slope of the image
+    Cancels out the planar slope of the image.
 
-    Starting from the plane equation z = a*x + b*y + c, this function subtracts z = A*x + B*y to the height values of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the plane and the height values. Note that this function does not subtract the whole plane z = A*x + B*y + C.
+    Starting from the plane equation z = a*x + b*y + c, this function subtracts A*x + B*y + C to the height values of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the plane and the height values. This is done to eliminate any planar inclination due to sample positioning in the AFM microscope.
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ def common_plane_subtraction(
     """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
-    y_ax = np.arange(ny) #initialize the x and y axis as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
+    y_ax = np.arange(ny) #initialize the x and y axes as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
     X, Y = np.meshgrid(x_ax, y_ax) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
     x_flat = X.ravel()
     y_flat = Y.ravel()
@@ -38,8 +38,23 @@ def common_plane_subtraction(
 def mean_drift_subtraction(
     height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
+    """
+    Cancels out the drift along the fast scan direction by mean subtraction.
+
+    This function computes the mean value of each line along the fast scan direction (x axis) and subtracts this values to each height value in the line. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. 
+
+    Parameters
+    ----------
+    height_values: ndarray[float]
+                   2-d grid with height values.
+
+    Returns
+    -------
+    ndarray[float]
+                   2-d grid with the height values corrected by mean subtraction.
+    """
     ny = height_values.shape[0]
-    y_ax = np.arange(ny)
+    y_ax = np.arange(ny) #initialize the y axis as a 1d arrays of integers. They represent fictitious coordinates to do the calculations.
     mean_set = []
     for y in y_ax:
         mean_height = np.mean(height_values[y])
@@ -52,6 +67,21 @@ def mean_drift_subtraction(
 def line_drift_subtraction(
     height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
+    """
+    Cancels out the drift along the fast scan direction by line subtraction.
+
+    Starting from the line equation z = m*x + q, this function subtracts M*x + Q to the height values of each fast scan direction (x axis direction) of the AFM image, where the coefficients M and Q are obtained by minimizing the square displacement between the line and the height values. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. 
+
+    Parameters
+    ----------
+    height_values: ndarray[float]
+                   2-d grid with height values.
+
+    Returns
+    -------
+    ndarray[float]
+                   2-d grid with the height values corrected by line subtraction.
+    """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
     y_ax = np.arange(ny)

@@ -1,8 +1,8 @@
 {
     "file_specifications": {
         "input_file_name": "mesoporous_SiO2.tiff",
-        "2D_image_output_file_name": "pn_junction_output_2D.pdf",
-        "3D_image_output_file_name": "pn_junction_output_3D.pdf",
+        "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
+        "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
         "scanning_rate": 1e6,
         "image_length": 256e-6
     },
