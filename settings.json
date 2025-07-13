@@ -8,8 +8,8 @@
     },
 
     "data_analysis": {
-        "data_shift": "minimum",
-        "common_plane_subtraction": "yes",
+        "data_shift": "MEAN",
+        "common_plane_subtraction": "no",
         "line_drift_correction": "linear"
     },
 

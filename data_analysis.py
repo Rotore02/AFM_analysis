@@ -1,25 +1,31 @@
 import numpy as np
-import results_generator as rg
-
-results_file = rg.ResultsGenerator()
+import smart_file as sm
 
 def common_plane_subtraction(
-    height_values : np.ndarray[float]
+    height_values : np.ndarray[float],
+    results_file : sm.SmartFile
     ) -> np.ndarray[float]:
     """
     Cancels out the planar slope of the image.
 
-    Starting from the plane equation z = a*x + b*y + c, this function subtracts A*x + B*y + C to the height values of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the plane and the height values. This is done to eliminate any planar inclination due to sample positioning in the AFM microscope.
+    Starting from the plane equation z = a*x + b*y + c, this function subtracts A*x + B*y + C to the height values of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the plane and the height values. This is done to eliminate any planar inclination due to sample positioning in the AFM microscope. The plane parameters will be written in the results_file if its internal state `enabled` is set to True.
 
     Parameters
     ----------
     height_values: ndarray[float]
                    2-d grid with height values.
+    results_file: sm.SmartFile
+                  File-like object that records results if its internal `enabled` flag is True.
+                  
 
     Returns
     -------
     ndarray[float]
                    2-d grid with the height values subtracted by the common plane.
+
+    See Also
+    --------
+    sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True. Its methods internally check wether this condition is met.
     """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
@@ -31,27 +37,38 @@ def common_plane_subtraction(
     A = np.vstack([x_flat, y_flat, np.ones_like(x_flat)]).T 
     coeffs, _, _, _ = np.linalg.lstsq(A, z_flat)
     a,b,c = coeffs
-    results_file.write("COMMON PLANE SUBTRACTION" + '\n' + "plane equation: z = a*x + b*y + c" + '\n' + 
-                       f"a = {a}" + '\n' + f"b = {b}" + '\n' + f"c = {c}" + '\n' + "----------------------------" + '\n')
+    results_file.write("COMMON PLANE SUBTRACTION" + '\n' + 
+                       "plane equation: z = a*x + b*y + c" + '\n' + 
+                       f"a = {a}" + '\n' + 
+                       f"b = {b}" + '\n' + 
+                       f"c = {c}" + '\n' + 
+                       "----------------------------" + '\n')
     return height_values - (a*X + b*Y + c)
 
 def mean_drift_subtraction(
-    height_values : np.ndarray[float]
+    height_values : np.ndarray[float],
+    results_file : sm.SmartFile
     ) -> np.ndarray[float]:
     """
     Cancels out the drift along the fast scan direction by mean subtraction.
 
-    This function computes the mean value of each line along the fast scan direction (x axis) and subtracts this values to each height value in the line. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. 
+    This function computes the mean value of each line along the fast scan direction (x axis) and subtracts this values to each height value in the line. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. The average mean value and its standard deviation will be written in the results_file if its internal state `enabled` is set to True.
 
     Parameters
     ----------
     height_values: ndarray[float]
                    2-d grid with height values.
+    results_file: sm.SmartFile
+                  File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
     ndarray[float]
                    2-d grid with the height values corrected by mean subtraction.
+
+    See Also
+    --------
+    sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True. Its methods internally check wether this condition is met.
     """
     ny = height_values.shape[0]
     y_ax = np.arange(ny) #initialize the y axis as a 1d arrays of integers. They represent fictitious coordinates to do the calculations.
@@ -61,26 +78,35 @@ def mean_drift_subtraction(
         height_values[y] = height_values[y] - mean_height
         mean_set.append(mean_height)
     results_file.write("MEAN DRIFT SUBTRACTION" + '\n' + 
-                       f"average mean value = {np.mean(mean_set)}" + '\n' + f"standard daviation = {np.std(mean_set)}" + '\n' + "----------------------------" + '\n')
+                       f"average mean value = {np.mean(mean_set)}" + '\n' + 
+                       f"standard daviation = {np.std(mean_set)}" + '\n' + 
+                       "----------------------------" + '\n')
     return height_values
 
 def line_drift_subtraction(
-    height_values : np.ndarray[float]
+    height_values : np.ndarray[float],
+    results_file : sm.SmartFile
     ) -> np.ndarray[float]:
     """
     Cancels out the drift along the fast scan direction by line subtraction.
 
-    Starting from the line equation z = m*x + q, this function subtracts M*x + Q to the height values of each fast scan direction (x axis direction) of the AFM image, where the coefficients M and Q are obtained by minimizing the square displacement between the line and the height values. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. 
+    Starting from the line equation z = m*x + q, this function subtracts M*x + Q to the height values of each fast scan direction (x axis direction) of the AFM image, where the coefficients M and Q are obtained by minimizing the square displacement between the line and the height values. This is done to eliminate systematic drifts due to temperature variations or friction between the sample and the cantilever. The average values of M and Q and their standard deviation will be written in the results_file if its internal state `enabled` is set to True.
 
     Parameters
     ----------
     height_values: ndarray[float]
                    2-d grid with height values.
+    results_file: sm.SmartFile
+                  File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
     ndarray[float]
                    2-d grid with the height values corrected by line subtraction.
+    
+    See Also
+    --------
+    sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True. Its methods internally check wether this condition is met.
     """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
@@ -95,13 +121,16 @@ def line_drift_subtraction(
         m_set.append(m)
         q_set.append(q)
     results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line_equation: z = m*z + q" + '\n' +
-                       f"average m value = {np.mean(m_set)} pm {np.std(m_set)}" + '\n' + 
-                       f"average q value = {np.mean(q_set)} pm {np.std(q_set)}" + '\n' + "----------------------------" + '\n')
+                       f"average m value = {np.mean(m_set)}" + '\n' + 
+                       f"m values standard deviation = {np.std(m_set)}" + '\n' + 
+                       f"average q value = {np.mean(q_set)}" + '\n' +
+                       f"q values standard deviation = {np.std(q_set)}" + '\n' + 
+                         "----------------------------" + '\n')
     
     return height_values
 
 def shift_min(
-    height_values : np.ndarray[float]
+    height_values : np.ndarray[float],
     ) -> np.ndarray[float]:
     """
     Sets the minimum height value to zero.
@@ -116,11 +145,9 @@ def shift_min(
     Returns
     -------
     ndarray[float]
-                   2-d grid with the height values subtracted by the minimum height value. 
+                   2-d grid with the height values subtracted by the minimum height value.
     """
     minimum_height = np.min(height_values)
-    results_file.write("MIN VALUE SUBTRACTION" + '\n' + 
-                       f"minimum height value = {minimum_height}" + '\n' + "----------------------------" + '\n')
     return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
@@ -139,11 +166,9 @@ def shift_mean(
     Returns
     -------
     ndarray[float]
-                   2-d grid with the height values subtracted by the mean height value. 
+                   2-d grid with the height values subtracted by the mean height value.
     """
     mean_height = np.mean(height_values)
-    results_file.write("MIN VALUE SUBTRACTION" + '\n' + 
-                       f"minimum height value = {mean_height} pm {np.std(height_values)}" + '\n' + "----------------------------" + '\n')
     return height_values- mean_height #the mean height is set to zero
 
 

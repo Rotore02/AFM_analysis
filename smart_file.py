@@ -1,4 +1,4 @@
-class ResultsGenerator:
+class SmartFile:
     def __init__(self):
         self.enabled = False
         self.file = None
