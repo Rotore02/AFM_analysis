@@ -1,8 +1,7 @@
 import numpy as np
-from scipy.odr import ODR, Model, RealData
-import image
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import results_generator as rg
+
+results_file = rg.ResultsGenerator()
 
 def common_plane_subtraction(
     height_values : np.ndarray[float]
@@ -32,18 +31,22 @@ def common_plane_subtraction(
     A = np.vstack([x_flat, y_flat, np.ones_like(x_flat)]).T 
     coeffs, _, _, _ = np.linalg.lstsq(A, z_flat)
     a,b,c = coeffs
+    results_file.write("COMMON PLANE SUBTRACTION" + '\n' + "plane equation: z = a*x + b*y + c" + '\n' + 
+                       f"a = {a}" + '\n' + f"b = {b}" + '\n' + f"c = {c}" + '\n' + "----------------------------" + '\n')
     return height_values - (a*X + b*Y + c)
 
 def mean_drift_subtraction(
     height_values : np.ndarray[float]
     ) -> np.ndarray[float]:
-    nx, ny = height_values.shape
-    x_ax = np.arange(nx)
+    ny = height_values.shape[0]
     y_ax = np.arange(ny)
-    A = np.vstack([x_ax, np.ones_like(x_ax)]).T
+    mean_set = []
     for y in y_ax:
         mean_height = np.mean(height_values[y])
         height_values[y] = height_values[y] - mean_height
+        mean_set.append(mean_height)
+    results_file.write("MEAN DRIFT SUBTRACTION" + '\n' + 
+                       f"average mean value = {np.mean(mean_set)}" + '\n' + f"standard daviation = {np.std(mean_set)}" + '\n' + "----------------------------" + '\n')
     return height_values
 
 def line_drift_subtraction(
@@ -53,10 +56,18 @@ def line_drift_subtraction(
     x_ax = np.arange(nx)
     y_ax = np.arange(ny)
     A = np.vstack([x_ax, np.ones_like(x_ax)]).T
+    m_set = []
+    q_set = []
     for y in y_ax:
         coeffs, _, _, _ = np.linalg.lstsq(A,height_values[y])
         m,q = coeffs
         height_values[y] = height_values[y] - (m*x_ax + q)
+        m_set.append(m)
+        q_set.append(q)
+    results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line_equation: z = m*z + q" + '\n' +
+                       f"average m value = {np.mean(m_set)} pm {np.std(m_set)}" + '\n' + 
+                       f"average q value = {np.mean(q_set)} pm {np.std(q_set)}" + '\n' + "----------------------------" + '\n')
+    
     return height_values
 
 def shift_min(
@@ -78,6 +89,8 @@ def shift_min(
                    2-d grid with the height values subtracted by the minimum height value. 
     """
     minimum_height = np.min(height_values)
+    results_file.write("MIN VALUE SUBTRACTION" + '\n' + 
+                       f"minimum height value = {minimum_height}" + '\n' + "----------------------------" + '\n')
     return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
@@ -99,6 +112,8 @@ def shift_mean(
                    2-d grid with the height values subtracted by the mean height value. 
     """
     mean_height = np.mean(height_values)
+    results_file.write("MIN VALUE SUBTRACTION" + '\n' + 
+                       f"minimum height value = {mean_height} pm {np.std(height_values)}" + '\n' + "----------------------------" + '\n')
     return height_values- mean_height #the mean height is set to zero
 
 

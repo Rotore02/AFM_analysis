@@ -1,0 +1,17 @@
+COMMON PLANE SUBTRACTION
+plane equation: z = a*x + b*y + c
+a = 0.007002397652048833
+b = 0.8396678572689857
+c = 12.476285051279024
+----------------------------
+
+LINE DRIFT SUBTRACTION
+line_equation: z = m*z + q
+average m value = -1.0259805158230328e-15 pm 0.02507257771218171
+average q value = 1.3211653993039363e-13 pm 9.364454760442339
+----------------------------
+
+MIN VALUE SUBTRACTION
+minimum height value = -13.948923881322953
+----------------------------
+
