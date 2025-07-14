@@ -66,8 +66,6 @@ def create_coordinate_grid(
     numpy.meshgrid : Generates coordinate matrices from coordinate vectors.
     """
     N_points = int(round(image_width * scanning_rate))
-    if not isinstance(N_points, int):
-        raise ValueError("Scanning rate and image width product is not an integer number. Please check if those values are inserted correctly")
     scan_direction = np.linspace(0, image_width, N_points)
     return np.meshgrid(scan_direction,scan_direction)
 
@@ -94,6 +92,8 @@ def plot_2d_image(
     """
     if color_map not in plt.colormaps():
         raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+    if not coordinate_grid[0].shape == height_values.shape or not coordinate_grid[1] .shape == height_values.shape:
+        raise ValueError("Coordinate matrix and height values array have different shapes. Please check that the scanning rate and the image length are inserted correctly.")
     x,y = coordinate_grid
     real_space_map = [x.min(), x.max(), y.max(), y.min()]
     fig, ax = plt.subplots(figsize=(8,6))
@@ -128,6 +128,8 @@ def plot_3d_image(
     """
     if color_map not in plt.colormaps():
         raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+    if not coordinate_grid[0].shape == height_values.shape or not coordinate_grid[1] .shape == height_values.shape:
+        raise ValueError("Coordinate matrix and height values array have different shapes. Please check that the scanning rate and the image length are inserted correctly.")
     x,y = coordinate_grid
     fig = plt.figure(figsize=(10, 6))
     ax = fig.add_subplot(111, projection='3d')
