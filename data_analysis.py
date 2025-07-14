@@ -2,9 +2,9 @@ import numpy as np
 import smart_file as sm
 
 def common_plane_subtraction(
-    height_values : np.ndarray[float],
+    height_values : np.ndarray,
     results_file : sm.SmartFile
-    ) -> np.ndarray[float]:
+    ) -> np.ndarray:
     """
     Cancels out the planar slope of the image.
 
@@ -12,20 +12,21 @@ def common_plane_subtraction(
 
     Parameters
     ----------
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values.
-    results_file: sm.SmartFile
+    results_file: SmartFile
                   File-like object that records results if its internal `enabled` flag is True.
                   
 
     Returns
     -------
-    ndarray[float]
-                   2-d grid with the height values subtracted by the common plane.
+    ndarray
+            2-d grid with the height values subtracted by the common plane.
 
     See Also
     --------
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True. Its methods internally check wether this condition is met.
+    numpy.meshgrid : Generates coordinate matrices from coordinate vectors.
     """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
@@ -46,9 +47,9 @@ def common_plane_subtraction(
     return height_values - (a*X + b*Y + c)
 
 def mean_drift_subtraction(
-    height_values : np.ndarray[float],
+    height_values : np.ndarray,
     results_file : sm.SmartFile
-    ) -> np.ndarray[float]:
+    ) -> np.ndarray:
     """
     Cancels out the drift along the fast scan direction by mean subtraction.
 
@@ -56,15 +57,15 @@ def mean_drift_subtraction(
 
     Parameters
     ----------
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values.
-    results_file: sm.SmartFile
+    results_file: SmartFile
                   File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
-    ndarray[float]
-                   2-d grid with the height values corrected by mean subtraction.
+    ndarray
+            2-d grid with the height values corrected by mean subtraction.
 
     See Also
     --------
@@ -84,9 +85,9 @@ def mean_drift_subtraction(
     return height_values
 
 def line_drift_subtraction(
-    height_values : np.ndarray[float],
+    height_values : np.ndarray,
     results_file : sm.SmartFile
-    ) -> np.ndarray[float]:
+    ) -> np.ndarray:
     """
     Cancels out the drift along the fast scan direction by line subtraction.
 
@@ -94,15 +95,15 @@ def line_drift_subtraction(
 
     Parameters
     ----------
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values.
-    results_file: sm.SmartFile
+    results_file: SmartFile
                   File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
-    ndarray[float]
-                   2-d grid with the height values corrected by line subtraction.
+    ndarray
+            2-d grid with the height values corrected by line subtraction.
     
     See Also
     --------
@@ -130,8 +131,8 @@ def line_drift_subtraction(
     return height_values
 
 def shift_min(
-    height_values : np.ndarray[float],
-    ) -> np.ndarray[float]:
+    height_values : np.ndarray,
+    ) -> np.ndarray:
     """
     Sets the minimum height value to zero.
 
@@ -139,20 +140,20 @@ def shift_min(
     
     Parameters
     ----------
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values.
 
     Returns
     -------
-    ndarray[float]
-                   2-d grid with the height values subtracted by the minimum height value.
+    ndarray
+            2-d grid with the height values subtracted by the minimum height value.
     """
     minimum_height = np.min(height_values)
     return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
-    height_values : np.ndarray[float]
-    ) -> np.ndarray[float]:
+    height_values : np.ndarray
+    ) -> np.ndarray:
     """
     Sets the mean height value to zero.
 
@@ -160,13 +161,13 @@ def shift_mean(
     
     Parameters
     ----------
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values.
 
     Returns
     -------
-    ndarray[float]
-                   2-d grid with the height values subtracted by the mean height value.
+    ndarray
+            2-d grid with the height values subtracted by the mean height value.
     """
     mean_height = np.mean(height_values)
     return height_values- mean_height #the mean height is set to zero

@@ -4,7 +4,7 @@ import numpy as np
 
 def noisy_plane(
         noise : bool = False
-        ) -> np.ndarray[any]:
+        ) -> np.ndarray:
     """
     Creates planar-distributed heights with or without noise.
 

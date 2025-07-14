@@ -4,7 +4,7 @@ import numpy as np
 
 def read_tiff(
     file_name : str  
-    ) -> np.ndarray[float]:
+    ) -> np.ndarray:
     """
     Reads the tiff file.
 
@@ -12,12 +12,12 @@ def read_tiff(
 
     Parameters
     -----------
-    file: str
+    file_name: str
           Name of the tiff file that needs to be read.
 
     Returns
     --------
-    ndarray[float]
+    ndarray
             2-d grid containing numerical values representing each pixel color.
     
     Raises
@@ -38,7 +38,7 @@ def read_tiff(
 def create_coordinate_grid(
     scanning_rate : float, #Number of aquired points per unit length [m^(-1)], is set manually in the AFM
     image_width : float #Total length of the image [m], is set manually in the AFM
-    ) -> tuple[np.ndarray[float],...]:
+    ) -> tuple[np.ndarray,np.ndarray]:
     """
     Creates the coordinate grid in real space.
 
@@ -53,13 +53,17 @@ def create_coordinate_grid(
     
     Returns
     -------
-    tuple[ndarray[float]]
+    tuple of two ndarray
             a couple of 2-d coordinate matrices with the dimensions of the real space image.
 
     Raises
     ------
     ValueError
               If the two inputs Image_width and scanning_rate does not produce an integer number after multiplication.
+
+    See Also
+    --------
+    numpy.meshgrid : Generates coordinate matrices from coordinate vectors.
     """
     N_points = int(round(image_width * scanning_rate))
     if not isinstance(N_points, int):
@@ -69,8 +73,8 @@ def create_coordinate_grid(
 
 def plot_2d_image(
     output_file_name : str,
-    height_values : np.ndarray[float], #This is a 2-d array
-    coordinate_grid, #This is a couple of 2-d arrays
+    height_values : np.ndarray, #This is a 2-d array
+    coordinate_grid : tuple[np.ndarray, np.ndarray], #This is a couple of 2-d arrays
     color_map='Greys') -> None:
     """
     Plots AFM data as a 2D color map.
@@ -81,9 +85,9 @@ def plot_2d_image(
     -----------
     output_file_name: str
                       Name of the output file that will be saved in the folder 'output_files/'.
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values to be represented in the image.
-    coordinate_grid: tuple(ndarray[float])
+    coordinate_grid: tuple of two ndarray
                             Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
                Set of colors to plot the image. Default is 'Greys'.
@@ -103,8 +107,8 @@ def plot_2d_image(
 
 def plot_3d_image(
     output_file_name : str,
-    height_values : np.ndarray[float], #This is a 2-d array
-    coordinate_grid, #This is a couple of 2-d arrays
+    height_values : np.ndarray, #This is a 2-d array
+    coordinate_grid : tuple[np.ndarray, np.ndarray], #This is a couple of 2-d arrays
     color_map='Greys') -> None:
     """
     Plots AFM data as a 3D color map.
@@ -115,9 +119,9 @@ def plot_3d_image(
     -----------
     output_file_name: str
                       Name of the output file that will be saved in the folder 'output_files/'.
-    height_values: ndarray[float]
+    height_values: ndarray
                    2-d grid with height values to be represented in the image.
-    coordinate_grid: tuple(ndarray[float])
+    coordinate_grid: tuple of two ndarray
                             Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
                Set of colors to plot the image. Default is 'Greys'.
