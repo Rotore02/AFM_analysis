@@ -80,7 +80,7 @@ def mean_drift_subtraction(
         mean_set.append(mean_height)
     results_file.write("MEAN DRIFT SUBTRACTION" + '\n' + 
                        f"average mean value = {np.mean(mean_set)}" + '\n' + 
-                       f"standard daviation = {np.std(mean_set)}" + '\n' + 
+                       f"standard deviation = {np.std(mean_set)}" + '\n' + 
                        "----------------------------" + '\n')
     return height_values
 

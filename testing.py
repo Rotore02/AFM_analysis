@@ -109,7 +109,7 @@ def test_line_drift_subtraction_writes(tmp_path):
     Additionally, it applies the `data_analysis.line_drift_subtraction` function to the height values and checks that it correcly
     writes the expected output to the file.
     """
-    file_path = tmp_path / "common_plane_subtraction_test_file.txt"
+    file_path = tmp_path / "line_drift_subtraction_test_file.txt"
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
@@ -139,3 +139,24 @@ def test_mean_drift_subtraction():
     corrected_noisy_heights = data_analysis.mean_drift_subtraction(noisy_plane(True),results_file)
     assert np.allclose(np.mean(corrected_noisy_heights[0]), 0, atol=0.01)
     assert np.allclose(np.mean(corrected_noisy_heights[1]), 0, atol=0.01)
+
+def test_mean_drift_subtraction_writes(tmp_path):
+    """
+    This function tests that the function `data_analysis.mean_drift_subtraction` correctly writes on a `sm.SmartFile` object.
+
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test creates a temporary
+    `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
+    Additionally, it applies the `data_analysis.mean_drift_subtraction` function to the height values and checks that it correcly
+    writes the expected output to the file.
+    """
+    file_path = tmp_path / "mean_drift_subtraction_test_file.txt"
+    results_file = sm.SmartFile()
+    results_file.setup(str(file_path))
+
+    data_analysis.mean_drift_subtraction(noisy_plane(False), results_file)
+    results_file.close()
+
+    text = file_path.read_text()
+    assert "MEAN DRIFT SUBTRACTION" in text
+    assert "average mean value =" in text
+    assert "standard deviation =" in text
