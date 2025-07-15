@@ -121,7 +121,7 @@ def line_drift_subtraction(
         height_values[y] = height_values[y] - (m*x_ax + q)
         m_set.append(m)
         q_set.append(q)
-    results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line_equation: z = m*z + q" + '\n' +
+    results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line equation: z = m*z + q" + '\n' +
                        f"average m value = {np.mean(m_set)}" + '\n' + 
                        f"m values standard deviation = {np.std(m_set)}" + '\n' + 
                        f"average q value = {np.mean(q_set)}" + '\n' +
