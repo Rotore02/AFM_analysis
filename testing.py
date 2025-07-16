@@ -160,3 +160,20 @@ def test_mean_drift_subtraction_writes(tmp_path):
     assert "MEAN DRIFT SUBTRACTION" in text
     assert "average mean value =" in text
     assert "standard deviation =" in text
+
+def test_data_shift():
+    """
+    This function tests that the height values are shifted correctly.
+
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test subtracts the mean height value
+    using the `data_analysis.shift_mean` function and the minimum heght value using the `data_analysis.shift_min` function. Furthermore, it checks 
+    that the mean height value and the minimum height of the shifted arrays are correctly set to zero under a certain tolerance, respectively.
+    This tolerance is set to 1e-10.
+    """
+    mean_shifted_heights = data_analysis.shift_mean(noisy_plane())
+    assert np.isclose(np.mean(mean_shifted_heights), 0, atol=1e-10)
+
+    min_shifted_heights = data_analysis.shift_min(noisy_plane())
+    assert np.isclose(min_shifted_heights.min(), 0, atol=1e-10)
+
+
