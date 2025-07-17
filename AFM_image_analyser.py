@@ -50,6 +50,8 @@ if settings["data_analysis"]["data_shift"].lower() == "minimum":
     height_values = data_analysis.shift_min(height_values)
 elif settings["data_analysis"]["data_shift"].lower() == "mean":
     height_values = data_analysis.shift_mean(height_values)
+elif settings["data_analysis"]["data_shift"].lower() == "no":
+    pass
 else:
     raise TypeError("Variable inserted for 'data_shift' in settings.json is not valid. Please insert 'minimum' or 'mean' (variable is not case-sensitive).")
 
