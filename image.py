@@ -141,3 +141,19 @@ def plot_3d_image(
     color_bar.set_label("Height (nm)")
     plt.tight_layout()
     plt.savefig(f"output_files/{output_file_name}")
+
+def custom_plot(
+    data : tuple[np.ndarray, np.ndarray],
+    ax_labels = ("x", "y"),
+    title = "Plot",
+    color = "black",
+    out_file_name = "output_plot.pdf" 
+    ) -> None:
+    plt.figure(figsize=(10, 6))
+    plt.plot(data[0], data[1], color=color)
+    plt.title(title)
+    plt.xlabel(ax_labels[0])
+    plt.ylabel(ax_labels[1])
+    plt.grid("True")
+    plt.tight_layout()
+    plt.savefig(out_file_name)

@@ -53,6 +53,15 @@ elif settings["data_analysis"]["data_shift"].lower() == "mean":
 else:
     raise TypeError("Variable inserted for 'data_shift' in settings.json is not valid. Please insert 'minimum' or 'mean' (variable is not case-sensitive).")
 
+if settings["data_analysis"]["height_values_distribution"].lower() == "yes":
+    histogram = data_analysis.height_distribution(height_values)
+    ax_labels = ("height values (nm)", "counts")
+    image.custom_plot(histogram, ax_labels, "Height Values Distribution", out_file_name="output_files/height_values_distribution.pdf")
+elif settings["data_analysis"]["height_values_distribution"].lower() == "no":
+    pass
+else:
+    raise TypeError("Variable inserted for 'height_values_distribution' in settings.json is not valid. Please insert 'yes' or 'no' (variable is not case-sensitive).")
+
 image.plot_2d_image(settings["file_specifications"]["2D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
 image.plot_3d_image(settings["file_specifications"]["3D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
 

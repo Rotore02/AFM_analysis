@@ -172,6 +172,22 @@ def shift_mean(
     mean_height = np.mean(height_values)
     return height_values- mean_height #the mean height is set to zero
 
+def height_distribution(
+    height_values : np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray] :
+    n_bins = 100
+    delta_bin = (height_values.max() - height_values.min())/n_bins
+    height_ax = np.linspace(height_values.min(), height_values.max(), n_bins)
+    histo = []
+    for bin in height_ax:
+        count = np.count_nonzero((height_values >= bin) & (height_values <= bin + delta_bin))
+        histo.append(count)
+    return height_ax, np.array(histo)
 
-
-
+def roughness(
+    height_values : np.ndarray
+    ) -> float :
+    roughness_array = []
+    for y_value in height_values[0][:]:
+        mean_height = np.mean(height_values[:][y_value])
+        line_roughness = np.sqrt((1/len(height_values[:][y_value]))*(np.sum((np.mean(mean_height - height_values[:][y_value])**2))))
