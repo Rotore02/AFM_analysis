@@ -6,10 +6,15 @@ c = 12.476285051279024
 ----------------------------
 
 LINE DRIFT SUBTRACTION
-line_equation: z = m*z + q
+line equation: z = m*z + q
 average m value = -1.0259805158230328e-15
 m values standard deviation = 0.02507257771218171
 average q value = 1.3211653993039363e-13
 q values standard deviation = 9.364454760442339
+----------------------------
+
+ROUGHNESS
+mean line roughness = 4.146539713799436 nm
+standard deviation = 0.8500021157680003 nm
 ----------------------------
 

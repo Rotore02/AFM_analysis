@@ -62,6 +62,16 @@ elif settings["data_analysis"]["height_values_distribution"].lower() == "no":
 else:
     raise TypeError("Variable inserted for 'height_values_distribution' in settings.json is not valid. Please insert 'yes' or 'no' (variable is not case-sensitive).")
 
+if settings["data_analysis"]["roughness"].lower() == "1d":
+    data_analysis.roughness_1D(height_values, results_file)
+elif settings["data_analysis"]["roughness"].lower() == "2d":
+    pass
+elif settings["data_analysis"]["roughness"].lower() == "no":
+    pass
+else:
+    raise TypeError("Variable inserted for 'roughness' in settings.json is not valid. Please insert '1d', '2d' or 'no' (variable is not case-sensitive).")
+
+
 image.plot_2d_image(settings["file_specifications"]["2D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
 image.plot_3d_image(settings["file_specifications"]["3D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
 

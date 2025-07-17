@@ -184,10 +184,21 @@ def height_distribution(
         histo.append(count)
     return height_ax, np.array(histo)
 
-def roughness(
-    height_values : np.ndarray
-    ) -> float :
+def roughness_1D(
+    height_values : np.ndarray,
+    results_file : sm.SmartFile
+    ) -> None :
     roughness_array = []
-    for y_value in height_values[0][:]:
-        mean_height = np.mean(height_values[:][y_value])
-        line_roughness = np.sqrt((1/len(height_values[:][y_value]))*(np.sum((np.mean(mean_height - height_values[:][y_value])**2))))
+
+    for row in height_values:
+        mean_height = np.mean(row)
+        rms = np.sqrt(np.mean((row - mean_height) ** 2))
+        roughness_array.append(rms)
+
+    avg_roughness = np.mean(roughness_array)
+    std_roughness = np.std(roughness_array)
+
+    results_file.write("ROUGHNESS\n" +
+                       f"mean line roughness = {avg_roughness} nm\n" +
+                       f"standard deviation = {std_roughness} nm\n" +
+                       "----------------------------\n")

@@ -11,7 +11,8 @@
         "data_shift": "minimum",
         "common_plane_subtraction": "no",
         "line_drift_correction": "linear",
-        "height_values_distribution": "yes"
+        "height_values_distribution": "yes",
+        "roughness": "1d"
     },
 
     "graphics": {
