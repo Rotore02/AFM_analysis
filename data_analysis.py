@@ -182,7 +182,7 @@ def height_distribution(
     
     return bin_centers, histo
 
-def roughness_1D(
+def roughness_1d(
     height_values : np.ndarray,
     results_file : sm.SmartFile
     ) -> None :
@@ -193,10 +193,10 @@ def roughness_1D(
         rms = np.sqrt(np.mean((row - mean_height) ** 2))
         roughness_array.append(rms)
 
-    avg_roughness = np.mean(roughness_array)
-    std_roughness = np.std(roughness_array)
+    roughness = np.mean(roughness_array)
+    standard_deviation = np.std(roughness_array)
 
-    results_file.write("ROUGHNESS\n" +
-                       f"mean line roughness = {avg_roughness} nm\n" +
-                       f"standard deviation = {std_roughness} nm\n" +
+    results_file.write("1D ROUGHNESS\n" +
+                       f"roughness = {roughness} nm\n" +
+                       f"standard deviation = {standard_deviation} nm\n" +
                        "----------------------------\n")

@@ -203,3 +203,23 @@ def test_height_distribution_shape():
     histo = data_analysis.height_distribution(height_values)
     assert histo[0].size == 100
     assert np.sum(histo[1]) == height_values.size
+
+def test_1d_roughness(tmp_path):
+    file_path = tmp_path / "1D_roughness_test_file.txt"
+    results_file = sm.SmartFile()
+    results_file.setup(str(file_path))
+
+    height_values = np.array([[2,4],[0,2]])
+    data_analysis.roughness_1D(height_values, results_file)
+
+    text = file_path.read_text()
+    for line in text.splitlines():
+        if line.startswith("roughness ="):
+            roughness_value = float(line.split('=')[1].strip().split()[0])
+            assert np.isclose(roughness_value, 2.0)
+        if line.startswidth("standard deviation ="):
+            roughness_std = float(line.split('=')[1].strip().split()[0])
+            assert np.isclose(roughness_std, 0.7)
+
+
+
