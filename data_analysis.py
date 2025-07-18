@@ -186,13 +186,7 @@ def roughness_1d(
     height_values : np.ndarray,
     results_file : sm.SmartFile
     ) -> None :
-    roughness_array = []
-
-    for row in height_values:
-        mean_height = np.mean(row)
-        rms = np.sqrt(np.mean((row - mean_height) ** 2))
-        roughness_array.append(rms)
-
+    roughness_array = np.std(height_values, axis=1)
     roughness = np.mean(roughness_array)
     standard_deviation = np.std(roughness_array)
 
@@ -200,3 +194,15 @@ def roughness_1d(
                        f"roughness = {roughness} nm\n" +
                        f"standard deviation = {standard_deviation} nm\n" +
                        "----------------------------\n")
+    
+def roughness_2d(
+    height_values : np.ndarray,
+    results_file : sm.SmartFile
+    ) -> None :
+    roughness = np.std(height_values)
+
+    results_file.write("2D ROUGHNESS\n" +
+                       f"roughness = {roughness} nm\n" +
+                       "----------------------------\n"
+                       )
+

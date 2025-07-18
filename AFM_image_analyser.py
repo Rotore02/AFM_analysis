@@ -65,9 +65,9 @@ else:
     raise TypeError("Variable inserted for 'height_values_distribution' in settings.json is not valid. Please insert 'yes' or 'no' (variable is not case-sensitive).")
 
 if settings["data_analysis"]["roughness"].lower() == "1d":
-    data_analysis.roughness_1D(height_values, results_file)
+    data_analysis.roughness_1d(height_values, results_file)
 elif settings["data_analysis"]["roughness"].lower() == "2d":
-    pass
+    data_analysis.roughness_2d(height_values, results_file)
 elif settings["data_analysis"]["roughness"].lower() == "no":
     pass
 else:

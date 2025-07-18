@@ -9,10 +9,10 @@
 
     "data_analysis": {
         "data_shift": "minimum",
-        "common_plane_subtraction": "no",
+        "common_plane_subtraction": "yes",
         "line_drift_correction": "linear",
         "height_values_distribution": "yes",
-        "roughness": "1d"
+        "roughness": "2d"
     },
 
     "graphics": {

@@ -13,8 +13,7 @@ average q value = 1.3211653993039363e-13
 q values standard deviation = 9.364454760442339
 ----------------------------
 
-ROUGHNESS
-mean line roughness = 4.146539713799436 nm
-standard deviation = 0.8500021157680003 nm
+2D ROUGHNESS
+roughness = 4.232764486116135 nm
 ----------------------------
 
