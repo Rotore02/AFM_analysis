@@ -176,13 +176,11 @@ def height_distribution(
     height_values : np.ndarray
     ) -> tuple[np.ndarray, np.ndarray] :
     n_bins = 100
-    delta_bin = (height_values.max() - height_values.min())/n_bins
-    height_ax = np.linspace(height_values.min(), height_values.max(), n_bins)
-    histo = []
-    for bin in height_ax:
-        count = np.count_nonzero((height_values >= bin) & (height_values <= bin + delta_bin))
-        histo.append(count)
-    return height_ax, np.array(histo)
+    bin_edges = np.linspace(height_values.min(), height_values.max(), n_bins +1)
+    histo, _ = np.histogram(height_values, bin_edges)
+    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+    
+    return bin_centers, histo
 
 def roughness_1D(
     height_values : np.ndarray,

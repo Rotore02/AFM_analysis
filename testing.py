@@ -176,4 +176,30 @@ def test_data_shift():
     min_shifted_heights = data_analysis.shift_min(noisy_plane())
     assert np.isclose(min_shifted_heights.min(), 0, atol=1e-10)
 
+def test_height_distribution_axis():
+    height_values = np.array([[-1.3, 0.5], [0.2, 4.5]])
+    bin_width = (height_values.max() - height_values.min())/100
+    histo = data_analysis.height_distribution(height_values)
+    assert np.allclose(histo[0].min(), height_values.min() + bin_width/2)
+    assert np.allclose(histo[0].max(), height_values.max() - bin_width/2)
 
+    n_bins = 100
+    bin_edges = np.linspace(height_values.min(), height_values.max(), n_bins + 1)
+    expected_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+    assert np.allclose(histo[0], expected_centers)
+
+def test_height_distribution_count():
+    height_values = np.array([[0, 0.353], [0.5, 1]])
+    histo = data_analysis.height_distribution(height_values)
+    print(histo[0])
+    assert histo[1][0] == 1
+    assert histo[1][35] == 1
+    assert histo[1][50] == 1 #correctly check that 0.5, which is between bin 50 and bin 51, is put in bin 50 and not in bin 51.
+    assert histo[1][51] == 0
+    assert histo[1][99] == 1
+
+def test_height_distribution_shape():
+    height_values = noisy_plane()
+    histo = data_analysis.height_distribution(height_values)
+    assert histo[0].size == 100
+    assert np.sum(histo[1]) == height_values.size
