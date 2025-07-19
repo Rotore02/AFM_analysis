@@ -12,7 +12,7 @@ args = parser.parse_args()
 results_file = sm.SmartFile()
 
 if args.results:
-    results_file.setup(args.results)
+    results_file.setup(f"output_files/{args.results}")
 
 with open('settings.json', 'r') as settings_file:
     settings = json.load(settings_file)
