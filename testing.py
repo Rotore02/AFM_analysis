@@ -209,17 +209,19 @@ def test_1d_roughness(tmp_path):
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    height_values = np.array([[2,4],[0,2]])
+    height_values = np.array([[1,4],[-3,-1]])
     data_analysis.roughness_1d(height_values, results_file)
+
+    results_file.close()
 
     text = file_path.read_text()
     for line in text.splitlines():
         if line.startswith("roughness ="):
             roughness = float(line.split('=')[1].strip().split()[0])
-            assert np.isclose(roughness, 2.0)
-        if line.startswidth("standard deviation ="):
+            assert np.isclose(roughness, 1.25)
+        if line.startswith("standard deviation ="):
             standard_deviation = float(line.split('=')[1].strip().split()[0])
-            assert np.isclose(standard_deviation, 0.7)
+            assert np.isclose(standard_deviation, 0.25)
 
 def test_2d_roughness(tmp_path):
     file_path = tmp_path / "1D_roughness_test_file.txt"
@@ -229,10 +231,44 @@ def test_2d_roughness(tmp_path):
     height_values = np.array([[2,4],[0,2]])
     data_analysis.roughness_2d(height_values, results_file)
 
+    results_file.close()
+
     text = file_path.read_text()
     for line in text.splitlines():
         if line.startswith("roughness ="):
             roughness = float(line.split('=')[1].strip().split()[0])
             assert np.isclose(roughness, 1.4142)
 
+def test_roughness_is_shifting_indep(tmp_path):
+    file_path = tmp_path / "roughness_is_shifting_indep_test_file.txt"
+    results_file = sm.SmartFile()
+    results_file.setup(str(file_path))
 
+    height_values = noisy_plane()
+    mean_shifted_heights = data_analysis.shift_mean(height_values)
+    min_shifted_heights = data_analysis.shift_min(height_values)
+
+    data_analysis.roughness_1d(height_values, results_file)
+    data_analysis.roughness_1d(mean_shifted_heights, results_file)
+    data_analysis.roughness_1d(min_shifted_heights, results_file)
+
+    data_analysis.roughness_2d(height_values, results_file)
+    data_analysis.roughness_2d(mean_shifted_heights, results_file)
+    data_analysis.roughness_2d(mean_shifted_heights, results_file)
+
+    results_file.close()
+
+    text = file_path.read_text()
+    roughness_values = []
+    for line in text.splitlines():
+        if line.startswith("roughness ="):
+            roughness = float(line.split('=')[1].strip().split()[0])
+            roughness_values.append(roughness)
+
+    print(roughness_values)
+            
+    assert np.isclose(roughness_values[1], roughness_values[0])
+    assert np.isclose(roughness_values[2], roughness_values[0])
+    
+    assert np.isclose(roughness_values[4], roughness_values[3])
+    assert np.isclose(roughness_values[5], roughness_values[3])
