@@ -25,9 +25,9 @@ def noisy_plane(
 
     See Also
     --------
-    numpy.random.uniform : Function to generate uniform random numbers.
-    numpy.random.seed : Function that sets the seed for random number generation.
-    numpy.meshgrid : Generates coordinate matrices from coordinate vectors.
+    numpy.random.uniform : function to generate uniform random numbers.
+    numpy.random.seed : function that sets the seed for random number generation.
+    numpy.meshgrid : generates coordinate matrices from coordinate vectors.
 
     Notes
     ------
@@ -65,10 +65,10 @@ def test_common_plane_subtraction_writes(tmp_path):
     """
     This function tests that the function `data_analysis.common_plane_subtraction` correctly writes on a `sm.SmartFile` object.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test creates a temporary
-    `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.common_plane_subtraction` function to the height values and checks that it correcly
-    writes the expected output to the file.
+    Given the planar distributed height data generated using the `noisy_plane` function without noise,
+    this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
+    Additionally, it applies the `data_analysis.common_plane_subtraction` function to the height values and checks 
+    that it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "common_plane_subtraction_test_file.txt"
     results_file = sm.SmartFile()
@@ -84,12 +84,14 @@ def test_common_plane_subtraction_writes(tmp_path):
 
 def test_line_drift_subtraction():
     """
-    This function tests that the linear slope along the fast scan direction is correctly subtracted from the height data between a certain tolerance.
+    This function tests that the linear slope along the fast scan direction is correctly subtracted from the height 
+    data between a certain tolerance.
 
     Given the planar distributed height data generated using the `noisy_plane` function with and without noise,
-    this test applies the `data_analysis.line_drift_subtraction` function to subtract the linear slope along the x direction (fast scan direction).
-    The result should be a 2-d array of heights in which each line along the x axis is approximately zero within a certain tolerance.
-    This tolerance is set to 1e-10 for the data without noise and to 0.1 for the data with noise.
+    this test applies the `data_analysis.line_drift_subtraction` function to subtract the linear slope along the 
+    x direction (fast scan direction). The result should be a 2-d array of heights in which each line along the 
+    x axis is approximately zero within a certain tolerance. This tolerance is set to 1e-10 for the data without 
+    noise and to 0.1 for the data with noise.
     """
     results_file = sm.SmartFile()
     corrected_heights = data_analysis.line_drift_subtraction(noisy_plane(),results_file)
@@ -104,10 +106,10 @@ def test_line_drift_subtraction_writes(tmp_path):
     """
     This function tests that the function `data_analysis.line_drift_subtraction` correctly writes on a `sm.SmartFile` object.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test creates a temporary
-    `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.line_drift_subtraction` function to the height values and checks that it correcly
-    writes the expected output to the file.
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, 
+    this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
+    Additionally, it applies the `data_analysis.line_drift_subtraction` function to the height values and 
+    checks that it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "line_drift_subtraction_test_file.txt"
     results_file = sm.SmartFile()
@@ -124,12 +126,14 @@ def test_line_drift_subtraction_writes(tmp_path):
 
 def test_mean_drift_subtraction():
     """
-    This function tests that the mean of each fast scan direction line is correctly subtracted from the height data between a certain tolerance.
+    This function tests that the mean of each fast scan direction line is correctly subtracted from the height data 
+    between a certain tolerance.
 
     Given the planar distributed height data generated using the `noisy_plane` function with and without noise,
-    this test applies the `data_analysis.mean_drift_subtraction` function to subtract the mean of each line along the x direction (fast scan direction).
-    The result should be a 2-d array of heights in which each line along the x axis has the mean that is approximately zero within a certain tolerance.
-    This tolerance is set to 1e-10 for the data without noise and to 0.01 for the data with noise.
+    this test applies the `data_analysis.mean_drift_subtraction` function to subtract the mean of each line along the 
+    x direction (fast scan direction). The result should be a 2-d array of heights in which each line along the 
+    x axis has the mean that is approximately zero within a certain tolerance. This tolerance is set to 1e-10 for the 
+    data without noise and to 0.01 for the data with noise.
     """
     results_file = sm.SmartFile()
     corrected_heights = data_analysis.mean_drift_subtraction(noisy_plane(),results_file)
@@ -144,10 +148,10 @@ def test_mean_drift_subtraction_writes(tmp_path):
     """
     This function tests that the function `data_analysis.mean_drift_subtraction` correctly writes on a `sm.SmartFile` object.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test creates a temporary
-    `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.mean_drift_subtraction` function to the height values and checks that it correcly
-    writes the expected output to the file.
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, 
+    this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
+    Additionally, it applies the `data_analysis.mean_drift_subtraction` function to the height values and checks that 
+    it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "mean_drift_subtraction_test_file.txt"
     results_file = sm.SmartFile()
@@ -165,10 +169,11 @@ def test_data_shift():
     """
     This function tests that the height values are shifted correctly.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test subtracts the mean height value
-    using the `data_analysis.shift_mean` function and the minimum heght value using the `data_analysis.shift_min` function. Furthermore, it checks 
-    that the mean height value and the minimum height of the shifted arrays are correctly set to zero under a certain tolerance, respectively.
-    This tolerance is set to 1e-10.
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, 
+    this test subtracts the mean height value using the `data_analysis.shift_mean` function and the 
+    minimum heght value using the `data_analysis.shift_min` function. Furthermore, it checks that the 
+    mean height value and the minimum height of the shifted arrays are correctly set to zero under a certain tolerance, 
+    respectively. This tolerance is set to 1e-10.
     """
     mean_shifted_heights = data_analysis.shift_mean(noisy_plane())
     assert np.isclose(np.mean(mean_shifted_heights), 0, atol=1e-10)
@@ -180,10 +185,11 @@ def test_height_distribution_axis():
     """
     This function tests that the x axis (height values axis) of the height distribution is generated as expected.
 
-    Given a simple 2-d array composed of 2 rows and 2 columns, this test generates the x (height values) and y (number of occurrences) axis of the heights distribution using the
-    `data_analysis.height_distribution` function. First of all, it checks that the extremes of the x axis correspond to the minimum height plus half the bin width
-    and to the maximum height minus the bin width, respectively. Furthermore, it checks that all the 100 points in the x axis correspond to the expected centers
-    of each bin. 
+    Given a simple 2-d array composed of 2 rows and 2 columns, this test generates the x (height values) and 
+    y (number of occurrences) axis of the heights distribution using the `data_analysis.height_distribution` function. 
+    First of all, it checks that the extremes of the x axis correspond to the minimum height plus half the bin width
+    and to the maximum height minus the bin width, respectively. Furthermore, it checks that all the 100 points in the 
+    x axis correspond to the expected centers of each bin. 
     """
     height_values = np.array([[-1.3, 0.5], [0.2, 4.5]])
     bin_width = (height_values.max() - height_values.min())/100
@@ -200,11 +206,12 @@ def test_height_distribution_count():
     """
     This function tests that the y axis (number of occurrences) of the height distribution is generated as expected.
 
-    Given a simple 2-d array composed of 2 rows and 2 columns, this test generates the x (height values) and y (number of occurrences)
-    axis of the heights distribution using the `data_analysis.height_distribution` function. Then, it checks that each height
-    value `z` is correctly placed in the bin defined as [n⋅bin_width, (n+1)⋅bin_width), (including the left edge and excluding the
-    right edge) if n⋅bin_width <= z < (n+1)⋅bin_width, with n integer that goes from 0 to 99. The maximum height is placed
-    in the 99-th bin. In the test, particular attention is paid to the extremes and to the values at the bin edges.
+    Given a simple 2-d array composed of 2 rows and 2 columns, this test generates the x (height values) and 
+    y (number of occurrences) axis of the heights distribution using the `data_analysis.height_distribution` function. 
+    Then, it checks that each height value `z` is correctly placed in the bin defined as [n⋅bin_width, (n+1)⋅bin_width), 
+    (including the left edge and excluding the right edge) if n⋅bin_width <= `z` < (n+1)⋅bin_width, with n integer that 
+    goes from 0 to 99. The maximum height is placed in the 99-th bin. In the test, particular attention is paid to the 
+    extremes and to the values at the bin edges.
     """
     height_values = np.array([[0, 0.353], [0.5, 1]])
     histo = data_analysis.height_distribution(height_values)
@@ -219,11 +226,12 @@ def test_height_distribution_shape():
     """
     This function tests that the shape of the x and y axis of the height distribution histogram is consistent with the data.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, this test generates the 
-    x (height values) and y (number of occurrences) axis of the heights distribution using the `data_analysis.height_distribution`
-    function. After that, it checks that the x axis is exactly composed of 100 values (bin centers) and that the sum of all the y axis
-    values is equal to the amount of height data stored in the `height_values` 2-d array. This is to make sure that none of the height
-    values is left apart in the distribution.
+    Given the planar distributed height data generated using the `noisy_plane` function without noise, 
+    this test generates the x (height values) and y (number of occurrences) axis of the heights distribution using the 
+    `data_analysis.height_distribution` function. After that, it checks that the x axis is exactly composed of 
+    100 values (bin centers) and that the sum of all the y axis values is equal to the amount of height data 
+    stored in the `height_values` 2-d array. This is to make sure that none of the height values is 
+    left apart in the distribution.
     """
     height_values = noisy_plane()
     histo = data_analysis.height_distribution(height_values)
@@ -291,10 +299,10 @@ def test_roughness_is_shifting_indep(tmp_path):
     both the `data_analysis.shift_mean` function and the `data_analysis.shift_min` function to shift the height values.
     Afterward, both the `data_analysis.roughness_1d` and the `data_analysis.roughness_2d` functions are applied to the
     unshifted data and to the shifted data, in order to write on the temporary file all the values of roughness and 
-    standard deviation (this latter only for the 1-d case). Finally, this function checks from the file that the roughness of the
-    shifted heights equals the roughness of the unshifted heights, for both the 1-d and the 2-d calculations. For the 1-d case, 
-    also the invariance of the standard deviation is tested. The independency of the roughness from the height shifting allows
-    performing the roughness analysis after shifting the data in the `AFM_imagee_analyser.py` module.
+    standard deviation (this latter only for the 1-d case). Finally, this function checks from the file that the 
+    roughness of the shifted heights equals the roughness of the unshifted heights, for both the 1-d and the 2-d calculations. 
+    For the 1-d case, also the invariance of the standard deviation is tested. The independency of the roughness from the 
+    height shifting allows performing the roughness analysis after shifting the data in the `AFM_imagee_analyser.py` module.
     """
     file_path = tmp_path / "roughness_is_shifting_indep_test_file.txt"
     results_file = sm.SmartFile()
