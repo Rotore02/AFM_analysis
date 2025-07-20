@@ -26,13 +26,21 @@ def read_tiff(
               If the file does is not a tiff file or does not have the .tiff or .tif extensions (non case-sensitive).
     FileNotFoundError
                      If the input file does not exist or is not in the 'input_files/' directory.
+
+    See Also
+    --------
+    tiff.TiffFile: class that reads the tiff file.
+    tiff.TiffFile.asarray: method that converts the image in a numpy array.
     """
     if not file_name.lower().endswith((".tiff", ".tif")):
-        raise TypeError("Input file is not a tiff file or the typed input name does not end with .tiff or .tif. Please make sure the input file type is tiff and its name contains the .tiff or .tif extension (non case-sensitive).")
+        raise TypeError("Input file is not a tiff file or the typed input name does not end with .tiff or .tif. " \
+                        "Please make sure the input file type is tiff and its name contains the .tiff or .tif extension " \
+                        "(extension is non case-sensitive).")
     try:
         tiff_file = tiff.TiffFile(f"input_files/{file_name}")
     except FileNotFoundError:
-        raise FileNotFoundError("Input file not found in 'input_files/' directory. Please check that the file exists and is in the 'input_files/' directory.")
+        raise FileNotFoundError("Input file not found in 'input_files/' directory. Please check that the file exists and" \
+                                " is in the 'input_files/' directory.")
     return tiff_file.asarray()
 
 def create_coordinate_grid(
@@ -42,28 +50,30 @@ def create_coordinate_grid(
     """
     Creates the coordinate grid in real space.
 
-    Takes as inputs the scanning rate [m^(-1)] and the image width [m] and produces a couple of the coordinate matrices of the image in real space.
+    Takes as inputs the scanning rate [m^(-1)] and the image width [m] and produces a couple of coordinate
+    matrices of the image in real space. This is done to create a set of coordinates that represent the actual 
+    area scanned by the AFM, where to each coordinate corresponds an height value.
 
     Parameters
     ----------
     scanning_rate: float
-                   number of points per unit length.
+                   Number of acquired points per unit length.
     image_width: float
-                 edge length of the image.
+                 Edge length of the image.
     
     Returns
     -------
     tuple of two ndarray
-            a couple of 2-d coordinate matrices with the dimensions of the real space image.
+            A couple of 2-d coordinate matrices with the dimensions of the scanned area of the sample.
 
     Raises
     ------
     ValueError
-              If the two inputs Image_width and scanning_rate does not produce an integer number after multiplication.
+              If the two inputs `image_width` and `scanning_rate` does not produce an integer number after multiplication.
 
     See Also
     --------
-    numpy.meshgrid : Generates coordinate matrices from coordinate vectors.
+    np.meshgrid : Generates coordinate matrices from coordinate vectors.
     """
     N_points = int(round(image_width * scanning_rate))
     scan_direction = np.linspace(0, image_width, N_points)
@@ -77,9 +87,10 @@ def plot_2d_image(
     """
     Plots AFM data as a 2D color map.
 
-    Makes a 2-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the coordinates stored in coordinate_grid
+    Makes a 2-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the 
+    coordinates stored in `coordinate_grid`.
 
-    Parameters:
+    Parameters
     -----------
     output_file_name: str
                       Name of the output file that will be saved in the folder 'output_files/'.
@@ -88,12 +99,25 @@ def plot_2d_image(
     coordinate_grid: tuple of two ndarray
                             Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
-               Set of colors to plot the image. Default is 'Greys'.
+               Set of colors to plot the image. Default is `Greys`.
+
+    Raises
+    ------
+    TypeError
+             If the inserted color map does not exist.
+    ValueError
+              If the scanning rate and the image length are not correct.
+
+    See Also
+    --------
+    plt.colormaps: register with a list of all colormaps aviable from matplotlib.
     """
     if color_map not in plt.colormaps():
-        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at " \
+                        "https://matplotlib.org/stable/users/explain/colors/colormaps.html")
     if not coordinate_grid[0].shape == height_values.shape or not coordinate_grid[1] .shape == height_values.shape:
-        raise ValueError("Coordinate matrix and height values array have different shapes. Please check that the scanning rate and the image length are inserted correctly.")
+        raise ValueError("Coordinate matrix and height values array have different shapes. " \
+                         "Please check that the scanning rate and the image length are inserted correctly.")
     x,y = coordinate_grid
     real_space_map = [x.min(), x.max(), y.max(), y.min()]
     fig, ax = plt.subplots(figsize=(8,6))
@@ -113,7 +137,8 @@ def plot_3d_image(
     """
     Plots AFM data as a 3D color map.
 
-    Makes a 3-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the coordinates stored in coordinate_grid
+    Makes a 3-d plot of the height values stored in the 2-d grid labeling the x and y axis of the plot with the 
+    coordinates stored in `coordinate_grid`.
 
     Parameters:
     -----------
@@ -124,12 +149,25 @@ def plot_3d_image(
     coordinate_grid: tuple of two ndarray
                             Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
-               Set of colors to plot the image. Default is 'Greys'.
+               Set of colors to plot the image. Default is `Greys`.
+
+    Raises
+    ------
+    TypeError
+             If the inserted color map does not exist.
+    ValueError
+              If the scanning rate and the image length are not correct.
+
+    See Also
+    --------
+    plt.colormaps: register with a list of all colormaps aviable from matplotlib.
     """
     if color_map not in plt.colormaps():
-        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at ...(link to documentation)...)")
+        raise TypeError("The inserted color map does not exist. You can find all the valid color maps at " \
+                        "https://matplotlib.org/stable/users/explain/colors/colormaps.html")
     if not coordinate_grid[0].shape == height_values.shape or not coordinate_grid[1] .shape == height_values.shape:
-        raise ValueError("Coordinate matrix and height values array have different shapes. Please check that the scanning rate and the image length are inserted correctly.")
+        raise ValueError("Coordinate matrix and height values array have different shapes. " \
+                         "Please check that the scanning rate and the image length are inserted correctly.")
     x,y = coordinate_grid
     fig = plt.figure(figsize=(10, 6))
     ax = fig.add_subplot(111, projection='3d')
@@ -149,6 +187,28 @@ def custom_plot(
     color = "black",
     out_file_name = "output_plot.pdf" 
     ) -> None:
+    """
+    Plots the values stored in `data`.
+
+    This function generates a plot of the data stored in `data`, where `data[0]` is the x axis and `data[1]` is the y axis.
+
+    Parameters
+    ----------
+    data: tuple of two ndarray
+          Data of the x and y axis of the plot, respectively.
+    ax_labels: tuple of two strings
+               labels for the x and y axis, respectively. Default is `("x", "y")`.
+    title: str
+           Title of the plot. Default is `"Plot"`.
+    color: str
+           Color of the plotted data. Default is `"black"`.
+    out_file_name: str
+                   Name of the output plot file. Default is `"output_plot.pdf"`.
+
+    See Also
+    --------
+    plt.plot: function used to plot the data.
+    """
     plt.figure(figsize=(10, 6))
     plt.plot(data[0], data[1], color=color)
     plt.title(title)
