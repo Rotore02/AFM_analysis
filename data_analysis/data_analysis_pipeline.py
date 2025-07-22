@@ -1,4 +1,4 @@
-import data_analysis_functions
+from data_analysis import data_analysis_functions
 import graphics
 
 def build_data_analysis_pipeline(settings, results_file, height_values):

@@ -1,5 +1,5 @@
 import warnings
-import image_correction
+from image_correction import image_correction_functions
 from functools import partial
 
 def build_image_correction_pipeline(settings, results_file):
@@ -7,29 +7,29 @@ def build_image_correction_pipeline(settings, results_file):
 
     # Mapping for plane subtraction
     plane_sub_options = {
-        "yes": partial(image_correction.common_plane_subtraction, results_file=results_file),
+        "yes": partial(image_correction_functions.common_plane_subtraction, results_file=results_file),
         "no": None
     }
 
     # Drift correction strategies (require logic due to dependency)
     drift_correction_map = {
         "linear": lambda ps: [
-            partial(image_correction.common_plane_subtraction, results_file=results_file)
+            partial(image_correction_functions.common_plane_subtraction, results_file=results_file)
         ] * (ps == "no") + [
-            partial(image_correction.linear_drift_subtraction, results_file=results_file)
+            partial(image_correction_functions.linear_drift_subtraction, results_file=results_file)
         ],
         "mean": lambda ps: [
-            partial(image_correction.common_plane_subtraction, results_file=results_file)
+            partial(image_correction_functions.common_plane_subtraction, results_file=results_file)
         ] * (ps == "no") + [
-            partial(image_correction.mean_drift_subtraction, results_file=results_file)
+            partial(image_correction_functions.mean_drift_subtraction, results_file=results_file)
         ],
         "no": lambda ps: []
     }
 
     # Data shift
     data_shift_map = {
-        "minimum": image_correction.shift_min,
-        "mean": image_correction.shift_mean,
+        "minimum": image_correction_functions.shift_min,
+        "mean": image_correction_functions.shift_mean,
         "no": None
     }
 
