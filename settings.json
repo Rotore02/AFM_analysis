@@ -1,21 +1,21 @@
 {
-    "file_specifications": {
+    "files_specs_and_graphics": {
         "input_file_name": "mesoporous_SiO2.tiff",
         "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
         "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
         "scanning_rate": 1e6,
-        "image_length": 256e-6
+        "image_length": 256e-6,
+        "color_map": "viridis"
+    },
+
+    "image_correction": {
+        "common_plane_subtraction": "no",
+        "line_drift_correction": "bo",
+        "data_shift": "no"
     },
 
     "data_analysis": {
-        "data_shift": "minimum",
-        "common_plane_subtraction": "yes",
-        "line_drift_correction": "linear",
         "height_values_distribution": "no",
-        "roughness": "2d"
-    },
-
-    "graphics": {
-        "color_map": "viridis"
+        "roughness": "no"
     }
 }

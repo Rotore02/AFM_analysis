@@ -1,4 +1,5 @@
 import data_analysis
+import image_correction
 import smart_file as sm
 import numpy as np
 
@@ -55,10 +56,10 @@ def test_plane_subtraction():
     This tolerance is set to 1e-10 for the data without noise and to 0.1 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = data_analysis.common_plane_subtraction(noisy_plane(noise=False), results_file)
+    corrected_heights = image_correction.common_plane_subtraction(noisy_plane(noise=False), results_file, "yes")
     assert np.allclose(corrected_heights, 0, atol=1e-10)
 
-    corrected_noisy_heights = data_analysis.common_plane_subtraction(noisy_plane(noise=True), results_file)
+    corrected_noisy_heights = image_correction.common_plane_subtraction(noisy_plane(noise=True), results_file, "yes")
     assert np.allclose(corrected_noisy_heights, 0, atol=0.1)  
 
 def test_common_plane_subtraction_writes(tmp_path):
@@ -74,7 +75,7 @@ def test_common_plane_subtraction_writes(tmp_path):
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    data_analysis.common_plane_subtraction(noisy_plane(False), results_file)
+    image_correction.common_plane_subtraction(noisy_plane(False), results_file, "yes")
     results_file.close()
 
     text = file_path.read_text()
@@ -94,11 +95,11 @@ def test_line_drift_subtraction():
     noise and to 0.1 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = data_analysis.line_drift_subtraction(noisy_plane(),results_file)
+    corrected_heights = image_correction.line_drift_subtraction(noisy_plane(),results_file, "linear")
     assert np.allclose(corrected_heights[0], 0, atol=1e-10)
     assert np.allclose(corrected_heights[1], 0, atol=1e-10)
 
-    corrected_noisy_heights = data_analysis.line_drift_subtraction(noisy_plane(True),results_file)
+    corrected_noisy_heights = image_correction.line_drift_subtraction(noisy_plane(True),results_file, "linear")
     assert np.allclose(corrected_noisy_heights[0], 0, atol=0.1)
     assert np.allclose(corrected_noisy_heights[1], 0, atol=0.1)
 
@@ -115,7 +116,7 @@ def test_line_drift_subtraction_writes(tmp_path):
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    data_analysis.line_drift_subtraction(noisy_plane(False), results_file)
+    image_correction.line_drift_subtraction(noisy_plane(False), results_file, "linear")
     results_file.close()
 
     text = file_path.read_text()
@@ -136,11 +137,11 @@ def test_mean_drift_subtraction():
     data without noise and to 0.01 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = data_analysis.mean_drift_subtraction(noisy_plane(),results_file)
+    corrected_heights = image_correction.mean_drift_subtraction(noisy_plane(),results_file, "mean")
     assert np.allclose(np.mean(corrected_heights), 0, atol=1e-10)
     assert np.allclose(np.mean(corrected_heights[1]), 0, atol=1e-10)
 
-    corrected_noisy_heights = data_analysis.mean_drift_subtraction(noisy_plane(True),results_file)
+    corrected_noisy_heights = image_correction.mean_drift_subtraction(noisy_plane(True),results_file, "mean")
     assert np.allclose(np.mean(corrected_noisy_heights[0]), 0, atol=0.01)
     assert np.allclose(np.mean(corrected_noisy_heights[1]), 0, atol=0.01)
 
@@ -157,7 +158,7 @@ def test_mean_drift_subtraction_writes(tmp_path):
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    data_analysis.mean_drift_subtraction(noisy_plane(False), results_file)
+    image_correction.mean_drift_subtraction(noisy_plane(False), results_file, "mean")
     results_file.close()
 
     text = file_path.read_text()
@@ -175,10 +176,10 @@ def test_data_shift():
     mean height value and the minimum height of the shifted arrays are correctly set to zero under a certain tolerance, 
     respectively. This tolerance is set to 1e-10.
     """
-    mean_shifted_heights = data_analysis.shift_mean(noisy_plane())
+    mean_shifted_heights = image_correction.shift_mean(noisy_plane(), "mean")
     assert np.isclose(np.mean(mean_shifted_heights), 0, atol=1e-10)
 
-    min_shifted_heights = data_analysis.shift_min(noisy_plane())
+    min_shifted_heights = image_correction.shift_min(noisy_plane(), "minimum")
     assert np.isclose(min_shifted_heights.min(), 0, atol=1e-10)
 
 def test_height_distribution_axis():
@@ -309,8 +310,8 @@ def test_roughness_is_shifting_indep(tmp_path):
     results_file.setup(str(file_path))
 
     height_values = noisy_plane()
-    mean_shifted_heights = data_analysis.shift_mean(height_values)
-    min_shifted_heights = data_analysis.shift_min(height_values)
+    mean_shifted_heights = image_correction.shift_mean(height_values, "mean")
+    min_shifted_heights = image_correction.shift_min(height_values, "minimum")
 
     data_analysis.roughness_1d(height_values, results_file)
     data_analysis.roughness_1d(mean_shifted_heights, results_file)
