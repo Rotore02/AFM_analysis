@@ -1,9 +1,12 @@
 import argparse
 import json
-import graphics
-from image_correction import image_correction_pipeline
-from data_analysis import data_analysis_pipeline
-import smart_file as sm
+import os
+from AFM_analisys import graphics
+from .image_correction import image_correction_pipeline
+from .data_analysis import data_analysis_pipeline
+from AFM_analisys import smart_file as sm
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 parser = argparse.ArgumentParser("AFM image analyser")
 parser.add_argument('--results', nargs='?', const='results.txt', help="Write analysis results to a file (default: results.txt). You can optionally specify the file name.")
@@ -12,9 +15,16 @@ args = parser.parse_args()
 results_file = sm.SmartFile()
 
 if args.results:
-    results_file.setup(f"output_files/{args.results}")
+    # Crea percorso assoluto per la cartella output_files
+    output_dir = os.path.join(BASE_DIR, "output_files")
+    os.makedirs(output_dir, exist_ok=True)  # crea la cartella se non esiste
+    results_path = os.path.join(output_dir, args.results)
+    results_file.setup(results_path)
 
-with open('settings.json', 'r') as settings_file:
+# Path assoluto a settings.json (supponendo sia nella stessa cartella dello script)
+settings_path = os.path.join(BASE_DIR, 'settings.json')
+
+with open(settings_path, 'r') as settings_file:
     settings = json.load(settings_file)
 
 height_values = graphics.read_tiff(settings["files_specifications"]["input_file_name"])
@@ -27,6 +37,7 @@ data_an_pipeline = data_analysis_pipeline.build_data_analysis_pipeline(settings,
 for function in data_an_pipeline:
     function()
 
+# Creazione coordinate grid
 coordinate_grid = graphics.create_coordinate_grid(settings["files_specifications"]["scanning_rate"], settings["files_specifications"]["image_length"])
 
 graphics.plot_2d_image(settings["files_specifications"]["2D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])

@@ -1,5 +1,5 @@
-from data_analysis import data_analysis_functions
-import graphics
+from . import data_analysis_functions
+from AFM_analisys import graphics
 
 def build_data_analysis_pipeline(settings, results_file, height_values):
     pipeline = []
@@ -10,7 +10,7 @@ def build_data_analysis_pipeline(settings, results_file, height_values):
             data_analysis_functions.height_distribution(height_values),
             ("height values (nm)", "counts"),
             "Height Values Distribution",
-            out_file_name="output_files/height_values_distribution.pdf"
+            output_file_name="output_files/height_values_distribution.pdf"
         ),
         "no": None
     }

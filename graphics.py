@@ -1,6 +1,7 @@
 import tifffile as tiff
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 def read_tiff(
     file_name : str  
@@ -32,16 +33,16 @@ def read_tiff(
     tiff.TiffFile: class that reads the tiff file.
     tiff.TiffFile.asarray: method that converts the image in a numpy array.
     """
-    if not file_name.lower().endswith((".tiff", ".tif")):
+    input_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "input_files", file_name)
+    if not input_file_path.lower().endswith((".tiff", ".tif")):
         raise TypeError("Input file is not a tiff file or the typed input name does not end with .tiff or .tif. " \
                         "Please make sure the input file type is tiff and its name contains the .tiff or .tif extension " \
                         "(extension is non case-sensitive).")
-    try:
-        tiff_file = tiff.TiffFile(f"input_files/{file_name}")
-    except FileNotFoundError:
-        raise FileNotFoundError("Input file not found in 'input_files/' directory. Please check that the file exists and" \
-                                " is in the 'input_files/' directory.")
-    return tiff_file.asarray()
+    
+    if not os.path.isfile(input_file_path):
+        raise FileNotFoundError(f"File {file_name} not found")
+
+    return tiff.TiffFile(input_file_path).asarray()
 
 def create_coordinate_grid(
     scanning_rate : float, #Number of aquired points per unit length [m^(-1)], is set manually in the AFM
@@ -122,7 +123,8 @@ def plot_2d_image(
     color_bar = plt.colorbar(im, ax=ax)
     color_bar.set_label("Height (nm)")
     plt.tight_layout()
-    plt.savefig(f"output_files/{output_file_name}")
+    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_files", output_file_name)
+    plt.savefig(output_file_path)
 
 def plot_3d_image(
     output_file_name : str,
@@ -173,14 +175,15 @@ def plot_3d_image(
     color_bar = plt.colorbar(surf, ax=ax)
     color_bar.set_label("Height (nm)")
     plt.tight_layout()
-    plt.savefig(f"output_files/{output_file_name}")
+    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_files", output_file_name)
+    plt.savefig(output_file_path)
 
 def custom_plot(
     data : tuple[np.ndarray, np.ndarray],
     ax_labels = ("x", "y"),
     title = "Plot",
     color = "black",
-    out_file_name = "output_plot.pdf" 
+    output_file_name = "output_plot.pdf"
     ) -> None:
     """
     Plots the values stored in `data`.
@@ -213,4 +216,5 @@ def custom_plot(
     plt.ylabel(ax_labels[1])
     plt.grid("True")
     plt.tight_layout()
-    plt.savefig(out_file_name)
+    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), output_file_name)
+    plt.savefig(output_file_path)

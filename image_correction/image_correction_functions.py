@@ -1,5 +1,5 @@
 import numpy as np
-import smart_file as sm
+from AFM_analisys import smart_file as sm
 
 def common_plane_subtraction(
     height_values : np.ndarray,
