@@ -66,11 +66,6 @@ def create_coordinate_grid(
     tuple of two ndarray
             A couple of 2-d coordinate matrices with the dimensions of the scanned area of the sample.
 
-    Raises
-    ------
-    ValueError
-              If the two inputs `image_width` and `scanning_rate` does not produce an integer number after multiplication.
-
     See Also
     --------
     np.meshgrid : Generates coordinate matrices from coordinate vectors.

@@ -3,8 +3,7 @@ import smart_file as sm
 
 def common_plane_subtraction(
     height_values : np.ndarray,
-    results_file : sm.SmartFile,
-    execution_cond : str
+    results_file : sm.SmartFile
     ) -> np.ndarray:
     """
     Cancels out the planar slope of the image.
@@ -35,34 +34,27 @@ def common_plane_subtraction(
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
     Its methods internally check wether this condition is met.
     """
-    if execution_cond.lower() == "yes":
-        nx, ny = height_values.shape
-        x_ax = np.arange(nx)
-        y_ax = np.arange(ny) #initialize the x and y axes as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
-        X, Y = np.meshgrid(x_ax, y_ax) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
-        x_flat = X.ravel()
-        y_flat = Y.ravel()
-        z_flat = height_values.ravel()
-        A = np.vstack([x_flat, y_flat, np.ones_like(x_flat)]).T 
-        coeffs, _, _, _ = np.linalg.lstsq(A, z_flat)
-        a,b,c = coeffs
-        results_file.write("COMMON PLANE SUBTRACTION" + '\n' + 
-                        "plane equation: z = a*x + b*y + c" + '\n' + 
-                        f"a = {a}" + '\n' + 
-                        f"b = {b}" + '\n' + 
-                        f"c = {c}" + '\n' + 
-                        "----------------------------" + '\n')
-        return height_values - (a*X + b*Y + c)
-    elif execution_cond.lower() == 'no':
-        pass
-    else:
-        raise TypeError("Variable inserted for 'common_plane_subtraction' in settings.json is not valid. " \
-        "Please insert 'yes' or 'no' (variable is not case-sensitive).")
+    nx, ny = height_values.shape
+    x_ax = np.arange(nx)
+    y_ax = np.arange(ny) #initialize the x and y axes as two 1d arrays of integers. They represent fictitious coordinates to do the calculations.
+    X, Y = np.meshgrid(x_ax, y_ax) #create X and Y which are the fictitious coordinate matrices of the x and y axes.
+    x_flat = X.ravel()
+    y_flat = Y.ravel()
+    z_flat = height_values.ravel()
+    A = np.vstack([x_flat, y_flat, np.ones_like(x_flat)]).T 
+    coeffs, _, _, _ = np.linalg.lstsq(A, z_flat)
+    a,b,c = coeffs
+    results_file.write("COMMON PLANE SUBTRACTION" + '\n' + 
+                    "plane equation: z = a*x + b*y + c" + '\n' + 
+                    f"a = {a}" + '\n' + 
+                    f"b = {b}" + '\n' + 
+                    f"c = {c}" + '\n' + 
+                    "----------------------------" + '\n')
+    return height_values - (a*X + b*Y + c)
 
 def mean_drift_subtraction(
     height_values : np.ndarray,
-    results_file : sm.SmartFile,
-    execution_cond : str
+    results_file : sm.SmartFile
     ) -> np.ndarray:
     """
     Cancels out the drift along the fast scan direction by mean subtraction.
@@ -91,29 +83,22 @@ def mean_drift_subtraction(
     Its methods internally check wether this condition is met.
     line_drift_subtraction: function that cancels out the drift along the fast scan direction by line subtraction.
     """
-    if execution_cond.lower() == 'mean':
-        ny = height_values.shape[0]
-        y_ax = np.arange(ny) #initialize the y axis as a 1d arrays of integers from 0 to ny. They represent fictitious coordinates to do the calculations.
-        mean_set = []
-        for y in y_ax:
-            mean_height = np.mean(height_values[y])
-            height_values[y] = height_values[y] - mean_height
-            mean_set.append(mean_height)
-        results_file.write("MEAN DRIFT SUBTRACTION" + '\n' + 
-                        f"average mean value = {np.mean(mean_set)}" + '\n' + 
-                        f"standard deviation = {np.std(mean_set)}" + '\n' + 
-                        "----------------------------" + '\n')
-        return height_values
-    elif execution_cond.lower() == 'linear':
-        pass
-    else:
-        raise TypeError("Variable inserted for 'linear_drift_subtraction' in settings.json is not valid. " \
-        "Please insert 'linear' or 'mean' (variable is not case-sensitive).")
+    ny = height_values.shape[0]
+    y_ax = np.arange(ny) #initialize the y axis as a 1d arrays of integers from 0 to ny. They represent fictitious coordinates to do the calculations.
+    mean_set = []
+    for y in y_ax:
+        mean_height = np.mean(height_values[y])
+        height_values[y] = height_values[y] - mean_height
+        mean_set.append(mean_height)
+    results_file.write("MEAN DRIFT SUBTRACTION" + '\n' + 
+                    f"average mean value = {np.mean(mean_set)}" + '\n' + 
+                    f"standard deviation = {np.std(mean_set)}" + '\n' + 
+                    "----------------------------" + '\n')
+    return height_values
 
-def line_drift_subtraction(
+def linear_drift_subtraction(
     height_values : np.ndarray,
-    results_file : sm.SmartFile,
-    execution_cond : str
+    results_file : sm.SmartFile
     ) -> np.ndarray:
     """
     Cancels out the drift along the fast scan direction by line subtraction.
@@ -144,36 +129,29 @@ def line_drift_subtraction(
     Its methods internally check wether this condition is met.
     mean_drift_subtraction: function that cancels out the drift along the fast scan direction by mean subtraction.
     """
-    if execution_cond.lower() == 'linear':
-        nx, ny = height_values.shape
-        x_ax = np.arange(nx)
-        y_ax = np.arange(ny)
-        A = np.vstack([x_ax, np.ones_like(x_ax)]).T
-        m_set = []
-        q_set = []
-        for y in y_ax:
-            coeffs, _, _, _ = np.linalg.lstsq(A,height_values[y])
-            m,q = coeffs
-            height_values[y] = height_values[y] - (m*x_ax + q)
-            m_set.append(m)
-            q_set.append(q)
-        results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line equation: z = m*z + q" + '\n' +
-                        f"average m value = {np.mean(m_set)}" + '\n' + 
-                        f"m values standard deviation = {np.std(m_set)}" + '\n' + 
-                        f"average q value = {np.mean(q_set)}" + '\n' +
-                        f"q values standard deviation = {np.std(q_set)}" + '\n' + 
-                            "----------------------------" + '\n')
-        
-        return height_values
-    elif execution_cond.lower() == 'mean':
-        pass
-    else:
-        raise TypeError("Variable inserted for 'linear_drift_subtraction' in settings.json is not valid. " \
-        "Please insert 'linear' or 'mean' (variable is not case-sensitive).")
+    nx, ny = height_values.shape
+    x_ax = np.arange(nx)
+    y_ax = np.arange(ny)
+    A = np.vstack([x_ax, np.ones_like(x_ax)]).T
+    m_set = []
+    q_set = []
+    for y in y_ax:
+        coeffs, _, _, _ = np.linalg.lstsq(A,height_values[y])
+        m,q = coeffs
+        height_values[y] = height_values[y] - (m*x_ax + q)
+        m_set.append(m)
+        q_set.append(q)
+    results_file.write("LINE DRIFT SUBTRACTION" + '\n' + "line equation: z = m*z + q" + '\n' +
+                    f"average m value = {np.mean(m_set)}" + '\n' + 
+                    f"m values standard deviation = {np.std(m_set)}" + '\n' + 
+                    f"average q value = {np.mean(q_set)}" + '\n' +
+                    f"q values standard deviation = {np.std(q_set)}" + '\n' + 
+                        "----------------------------" + '\n')
+    
+    return height_values
 
 def shift_min(
     height_values : np.ndarray,
-    execution_cond : str
     ) -> np.ndarray:
     """
     Sets the minimum height value to zero.
@@ -195,18 +173,11 @@ def shift_min(
     --------
     shift_mean: function that sets the mean height to zero.
     """
-    if execution_cond.lower() == 'minimum':
-        minimum_height = np.min(height_values)
-        return height_values - minimum_height #the minimum height value is set to zero
-    elif execution_cond.lower() == 'mean':
-        pass
-    else:
-        raise TypeError("Variable inserted for 'data_shift' in settings.json is not valid. " \
-        "Please insert 'minimum' or 'mean' (variable is not case-sensitive).")
+    minimum_height = np.min(height_values)
+    return height_values - minimum_height #the minimum height value is set to zero
 
 def shift_mean(
-    height_values : np.ndarray,
-    execution_cond : str
+    height_values : np.ndarray
     ) -> np.ndarray:
     """
     Sets the mean height value to zero.
@@ -229,12 +200,6 @@ def shift_mean(
     np.mean: function that computes the arithmetic mean along a certain axis.
     shift_min: function that sets the minimum height value to zero.
     """
-    if execution_cond.lower() == 'mean':
-        mean_height = np.mean(height_values)
-        return height_values - mean_height #the mean height is set to zero
-    elif execution_cond.lower() == 'minimum':
-        pass
-    else:
-        raise TypeError("Variable inserted for 'data_shift' in settings.json is not valid. " \
-        "Please insert 'minimum' or 'mean' (variable is not case-sensitive).")
+    mean_height = np.mean(height_values)
+    return height_values - mean_height #the mean height is set to zero
     

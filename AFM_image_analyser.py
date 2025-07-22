@@ -1,89 +1,35 @@
 import argparse
 import json
 import graphics
-import data_analysis
-import image_correction
+from image_correction import image_correction_pipeline
+from data_analysis import data_analysis_pipeline
 import smart_file as sm
-from functools import partial
-import inspect
 
-def build_image_correction_pipeline(full_function_list, results_file, settings_list):
-    function_exe_list = [
-        (func, cond) for func, cond in full_function_list if cond in settings_list
-    ]
+parser = argparse.ArgumentParser("AFM image analyser")
+parser.add_argument('--results', nargs='?', const='results.txt', help="Write analysis results to a file (default: results.txt). You can optionally specify the file name.")
+args = parser.parse_args()
 
-    def apply_pipeline(obj, function_exe_list, file_name):
-        for function, cond in function_exe_list:
-            n_args = len(inspect.signature(function).parameters)
-            if n_args == 2:
-                obj = function(obj, cond)
-            elif n_args == 3:
-                obj = function(obj, file_name, cond)
-            else:
-                raise ValueError(f"Function {function.__name__} must accept 2, or 3 arguments.")
-        return obj
-    
-    return partial(
-        apply_pipeline,
-        function_exe_list=function_exe_list,
-        file_name=results_file
-    )
+results_file = sm.SmartFile()
 
-def main():
-    parser = argparse.ArgumentParser("AFM graphics analyser")
-    parser.add_argument('--results', nargs='?', const='results.txt', help="Write analysis results to a file (default: results.txt). You can optionally specify the file name.")
-    args = parser.parse_args()
+if args.results:
+    results_file.setup(f"output_files/{args.results}")
 
-    results_file = sm.SmartFile()
+with open('settings.json', 'r') as settings_file:
+    settings = json.load(settings_file)
 
-    if args.results:
-        results_file.setup(f"output_files/{args.results}")
+height_values = graphics.read_tiff(settings["files_specifications"]["input_file_name"])
 
-    with open('settings.json', 'r') as settings_file:
-        settings = json.load(settings_file)
+im_corr_pipeline = image_correction_pipeline.build_image_correction_pipeline(settings, results_file)
+for function in im_corr_pipeline:
+    height_values = function(height_values)
 
-    height_values = graphics.read_tiff(settings["files_specs_and_graphics"]["input_file_name"])
-    
-    correct_graphics = build_image_correction_pipeline(
-    [
-        (image_correction.common_plane_subtraction, "yes"),
-        (image_correction.line_drift_subtraction, "linear"),
-        (image_correction.mean_drift_subtraction, "mean"),
-        (image_correction.shift_min, "minimum"),
-        (image_correction.shift_mean, "mean"),
-    ],
-        results_file,
-    [
-        settings["image_correction"]["common_plane_subtraction"],
-        settings["image_correction"]["line_drift_correction"],
-        settings["image_correction"]["data_shift"]
-    ]
-    )
-    corrected_heights = correct_graphics(height_values)
-    
-    coordinate_grid = graphics.create_coordinate_grid(settings["files_specs_and_graphics"]["scanning_rate"], settings["files_specs_and_graphics"]["image_length"])
-    graphics.plot_2d_image(settings["files_specs_and_graphics"]["2D_image_output_file_name"], corrected_heights, coordinate_grid, settings["files_specs_and_graphics"]["color_map"])
-    graphics.plot_3d_image(settings["files_specs_and_graphics"]["3D_image_output_file_name"], corrected_heights, coordinate_grid, settings["files_specs_and_graphics"]["color_map"])
-    
-    if settings["data_analysis"]["height_values_distribution"].lower() == "yes":
-        histogram = data_analysis.height_distribution(height_values)
-        ax_labels = ("height values (nm)", "counts")
-        graphics.custom_plot(histogram, ax_labels, "Height Values Distribution", out_file_name="output_files/height_values_distribution.pdf")
-    elif settings["data_analysis"]["height_values_distribution"].lower() == "no":
-        pass
-    else:
-        raise TypeError("Variable inserted for 'height_values_distribution' in settings.json is not valid. Please insert 'yes' or 'no' (variable is not case-sensitive).")
+data_an_pipeline = data_analysis_pipeline.build_data_analysis_pipeline(settings, results_file, height_values)
+for function in data_an_pipeline:
+    function()
 
-    if settings["data_analysis"]["roughness"].lower() == "1d":
-        data_analysis.roughness_1d(height_values, results_file)
-    elif settings["data_analysis"]["roughness"].lower() == "2d":
-        data_analysis.roughness_2d(height_values, results_file)
-    elif settings["data_analysis"]["roughness"].lower() == "no":
-        pass
-    else:
-        raise TypeError("Variable inserted for 'roughness' in settings.json is not valid. Please insert '1d', '2d' or 'no' (variable is not case-sensitive).")
+coordinate_grid = graphics.create_coordinate_grid(settings["files_specifications"]["scanning_rate"], settings["files_specifications"]["image_length"])
 
-    results_file.close()
+graphics.plot_2d_image(settings["files_specifications"]["2D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
+graphics.plot_3d_image(settings["files_specifications"]["3D_image_output_file_name"], height_values, coordinate_grid, settings["graphics"]["color_map"])
 
-if __name__ == "__main__":
-    main()
+results_file.close()

@@ -1,5 +1,7 @@
-import data_analysis
-import image_correction
+import smart_file as sm
+import numpy as np
+from image_correction import image_correction_functions
+from data_analysis import data_analysis_functions
 import smart_file as sm
 import numpy as np
 
@@ -51,31 +53,31 @@ def test_plane_subtraction():
     This function tests that the planar slope of the height data is correctly subtracted between a certain tolerance.
 
     Given the planar distributed height data generated using the `noisy_plane` function with and without noise,
-    this test applies the `data_analysis.common_plane_subtraction` function to subtract this planar slope.
+    this test applies the `image_correction_functions.common_plane_subtraction` function to subtract this planar slope.
     The result should be a 2-d array of heights which are approximately zero within a certain tolerance.
     This tolerance is set to 1e-10 for the data without noise and to 0.1 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = image_correction.common_plane_subtraction(noisy_plane(noise=False), results_file, "yes")
+    corrected_heights = image_correction_functions.common_plane_subtraction(noisy_plane(noise=False), results_file)
     assert np.allclose(corrected_heights, 0, atol=1e-10)
 
-    corrected_noisy_heights = image_correction.common_plane_subtraction(noisy_plane(noise=True), results_file, "yes")
+    corrected_noisy_heights = image_correction_functions.common_plane_subtraction(noisy_plane(noise=True), results_file)
     assert np.allclose(corrected_noisy_heights, 0, atol=0.1)  
 
 def test_common_plane_subtraction_writes(tmp_path):
     """
-    This function tests that the function `data_analysis.common_plane_subtraction` correctly writes on a `sm.SmartFile` object.
+    This function tests that the function `image_correction_functions.common_plane_subtraction` correctly writes on a `sm.SmartFile` object.
 
     Given the planar distributed height data generated using the `noisy_plane` function without noise,
     this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.common_plane_subtraction` function to the height values and checks 
+    Additionally, it applies the `image_correction_functions.common_plane_subtraction` function to the height values and checks 
     that it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "common_plane_subtraction_test_file.txt"
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    image_correction.common_plane_subtraction(noisy_plane(False), results_file, "yes")
+    image_correction_functions.common_plane_subtraction(noisy_plane(False), results_file)
     results_file.close()
 
     text = file_path.read_text()
@@ -83,40 +85,40 @@ def test_common_plane_subtraction_writes(tmp_path):
     assert "plane equation:" in text
     assert "a =" in text and "b =" in text and "c =" in text
 
-def test_line_drift_subtraction():
+def test_linear_drift_subtraction():
     """
     This function tests that the linear slope along the fast scan direction is correctly subtracted from the height 
     data between a certain tolerance.
 
     Given the planar distributed height data generated using the `noisy_plane` function with and without noise,
-    this test applies the `data_analysis.line_drift_subtraction` function to subtract the linear slope along the 
+    this test applies the `image_correction_functions.line_drift_subtraction` function to subtract the linear slope along the 
     x direction (fast scan direction). The result should be a 2-d array of heights in which each line along the 
     x axis is approximately zero within a certain tolerance. This tolerance is set to 1e-10 for the data without 
     noise and to 0.1 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = image_correction.line_drift_subtraction(noisy_plane(),results_file, "linear")
+    corrected_heights = image_correction_functions.linear_drift_subtraction(noisy_plane(),results_file)
     assert np.allclose(corrected_heights[0], 0, atol=1e-10)
     assert np.allclose(corrected_heights[1], 0, atol=1e-10)
 
-    corrected_noisy_heights = image_correction.line_drift_subtraction(noisy_plane(True),results_file, "linear")
+    corrected_noisy_heights = image_correction_functions.linear_drift_subtraction(noisy_plane(True),results_file)
     assert np.allclose(corrected_noisy_heights[0], 0, atol=0.1)
     assert np.allclose(corrected_noisy_heights[1], 0, atol=0.1)
 
-def test_line_drift_subtraction_writes(tmp_path):
+def test_linear_drift_subtraction_writes(tmp_path):
     """
-    This function tests that the function `data_analysis.line_drift_subtraction` correctly writes on a `sm.SmartFile` object.
+    This function tests that the function `image_correction_functions.line_drift_subtraction` correctly writes on a `sm.SmartFile` object.
 
     Given the planar distributed height data generated using the `noisy_plane` function without noise, 
     this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.line_drift_subtraction` function to the height values and 
+    Additionally, it applies the `image_correction_functions.line_drift_subtraction` function to the height values and 
     checks that it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "line_drift_subtraction_test_file.txt"
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    image_correction.line_drift_subtraction(noisy_plane(False), results_file, "linear")
+    image_correction_functions.linear_drift_subtraction(noisy_plane(False), results_file)
     results_file.close()
 
     text = file_path.read_text()
@@ -131,34 +133,34 @@ def test_mean_drift_subtraction():
     between a certain tolerance.
 
     Given the planar distributed height data generated using the `noisy_plane` function with and without noise,
-    this test applies the `data_analysis.mean_drift_subtraction` function to subtract the mean of each line along the 
+    this test applies the `image_correction_functions.mean_drift_subtraction` function to subtract the mean of each line along the 
     x direction (fast scan direction). The result should be a 2-d array of heights in which each line along the 
     x axis has the mean that is approximately zero within a certain tolerance. This tolerance is set to 1e-10 for the 
     data without noise and to 0.01 for the data with noise.
     """
     results_file = sm.SmartFile()
-    corrected_heights = image_correction.mean_drift_subtraction(noisy_plane(),results_file, "mean")
+    corrected_heights = image_correction_functions.mean_drift_subtraction(noisy_plane(),results_file)
     assert np.allclose(np.mean(corrected_heights), 0, atol=1e-10)
     assert np.allclose(np.mean(corrected_heights[1]), 0, atol=1e-10)
 
-    corrected_noisy_heights = image_correction.mean_drift_subtraction(noisy_plane(True),results_file, "mean")
+    corrected_noisy_heights = image_correction_functions.mean_drift_subtraction(noisy_plane(True),results_file)
     assert np.allclose(np.mean(corrected_noisy_heights[0]), 0, atol=0.01)
     assert np.allclose(np.mean(corrected_noisy_heights[1]), 0, atol=0.01)
 
 def test_mean_drift_subtraction_writes(tmp_path):
     """
-    This function tests that the function `data_analysis.mean_drift_subtraction` correctly writes on a `sm.SmartFile` object.
+    This function tests that the function `image_correction_functions.mean_drift_subtraction` correctly writes on a `sm.SmartFile` object.
 
     Given the planar distributed height data generated using the `noisy_plane` function without noise, 
     this test creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest. 
-    Additionally, it applies the `data_analysis.mean_drift_subtraction` function to the height values and checks that 
+    Additionally, it applies the `image_correction_functions.mean_drift_subtraction` function to the height values and checks that 
     it correcly writes the expected output to the file.
     """
     file_path = tmp_path / "mean_drift_subtraction_test_file.txt"
     results_file = sm.SmartFile()
     results_file.setup(str(file_path))
 
-    image_correction.mean_drift_subtraction(noisy_plane(False), results_file, "mean")
+    image_correction_functions.mean_drift_subtraction(noisy_plane(False), results_file)
     results_file.close()
 
     text = file_path.read_text()
@@ -171,15 +173,15 @@ def test_data_shift():
     This function tests that the height values are shifted correctly.
 
     Given the planar distributed height data generated using the `noisy_plane` function without noise, 
-    this test subtracts the mean height value using the `data_analysis.shift_mean` function and the 
-    minimum heght value using the `data_analysis.shift_min` function. Furthermore, it checks that the 
+    this test subtracts the mean height value using the `image_correction_functions.shift_mean` function and the 
+    minimum heght value using the `image_correction_functions.shift_min` function. Furthermore, it checks that the 
     mean height value and the minimum height of the shifted arrays are correctly set to zero under a certain tolerance, 
     respectively. This tolerance is set to 1e-10.
     """
-    mean_shifted_heights = image_correction.shift_mean(noisy_plane(), "mean")
+    mean_shifted_heights = image_correction_functions.shift_mean(noisy_plane())
     assert np.isclose(np.mean(mean_shifted_heights), 0, atol=1e-10)
 
-    min_shifted_heights = image_correction.shift_min(noisy_plane(), "minimum")
+    min_shifted_heights = image_correction_functions.shift_min(noisy_plane())
     assert np.isclose(min_shifted_heights.min(), 0, atol=1e-10)
 
 def test_height_distribution_axis():
@@ -194,7 +196,7 @@ def test_height_distribution_axis():
     """
     height_values = np.array([[-1.3, 0.5], [0.2, 4.5]])
     bin_width = (height_values.max() - height_values.min())/100
-    histo = data_analysis.height_distribution(height_values)
+    histo = data_analysis_functions.height_distribution(height_values)
     assert np.allclose(histo[0].min(), height_values.min() + bin_width/2)
     assert np.allclose(histo[0].max(), height_values.max() - bin_width/2)
 
@@ -215,7 +217,7 @@ def test_height_distribution_count():
     extremes and to the values at the bin edges.
     """
     height_values = np.array([[0, 0.353], [0.5, 1]])
-    histo = data_analysis.height_distribution(height_values)
+    histo = data_analysis_functions.height_distribution(height_values)
     print(histo[0])
     assert histo[1][0] == 1
     assert histo[1][35] == 1
@@ -235,7 +237,7 @@ def test_height_distribution_shape():
     left apart in the distribution.
     """
     height_values = noisy_plane()
-    histo = data_analysis.height_distribution(height_values)
+    histo = data_analysis_functions.height_distribution(height_values)
     assert histo[0].size == 100
     assert np.sum(histo[1]) == height_values.size
 
@@ -253,7 +255,7 @@ def test_1d_roughness(tmp_path):
     results_file.setup(str(file_path))
 
     height_values = np.array([[1,4],[-3,-1]])
-    data_analysis.roughness_1d(height_values, results_file)
+    data_analysis_functions.roughness_1d(height_values, results_file)
 
     results_file.close()
 
@@ -281,7 +283,7 @@ def test_2d_roughness(tmp_path):
     results_file.setup(str(file_path))
 
     height_values = np.array([[2,4],[0,2]])
-    data_analysis.roughness_2d(height_values, results_file)
+    data_analysis_functions.roughness_2d(height_values, results_file)
 
     results_file.close()
 
@@ -297,7 +299,7 @@ def test_roughness_is_shifting_indep(tmp_path):
 
     Given the planar distributed height data generated using the `noisy_plane` function without noise, this test
     creates a temporary `sm.SmartFile` object using the `tmp_path` temporary directory provided by pytest and executes 
-    both the `data_analysis.shift_mean` function and the `data_analysis.shift_min` function to shift the height values.
+    both the `image_correction_functions.shift_mean` function and the `image_correction_functions.shift_min` function to shift the height values.
     Afterward, both the `data_analysis.roughness_1d` and the `data_analysis.roughness_2d` functions are applied to the
     unshifted data and to the shifted data, in order to write on the temporary file all the values of roughness and 
     standard deviation (this latter only for the 1-d case). Finally, this function checks from the file that the 
@@ -310,16 +312,16 @@ def test_roughness_is_shifting_indep(tmp_path):
     results_file.setup(str(file_path))
 
     height_values = noisy_plane()
-    mean_shifted_heights = image_correction.shift_mean(height_values, "mean")
-    min_shifted_heights = image_correction.shift_min(height_values, "minimum")
+    mean_shifted_heights = image_correction_functions.shift_mean(height_values)
+    min_shifted_heights = image_correction_functions.shift_min(height_values)
 
-    data_analysis.roughness_1d(height_values, results_file)
-    data_analysis.roughness_1d(mean_shifted_heights, results_file)
-    data_analysis.roughness_1d(min_shifted_heights, results_file)
+    data_analysis_functions.roughness_1d(height_values, results_file)
+    data_analysis_functions.roughness_1d(mean_shifted_heights, results_file)
+    data_analysis_functions.roughness_1d(min_shifted_heights, results_file)
 
-    data_analysis.roughness_2d(height_values, results_file)
-    data_analysis.roughness_2d(mean_shifted_heights, results_file)
-    data_analysis.roughness_2d(mean_shifted_heights, results_file)
+    data_analysis_functions.roughness_2d(height_values, results_file)
+    data_analysis_functions.roughness_2d(mean_shifted_heights, results_file)
+    data_analysis_functions.roughness_2d(mean_shifted_heights, results_file)
 
     results_file.close()
 
