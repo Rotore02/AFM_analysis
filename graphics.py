@@ -14,19 +14,19 @@ def read_tiff(
     Parameters
     -----------
     file_name: str
-          Name of the tiff file that needs to be read.
+        Name of the tiff file that needs to be read.
 
     Returns
     --------
     ndarray
-            2-d grid containing numerical values representing each pixel color.
+        2-d grid containing numerical values representing each pixel color.
     
     Raises
     ------
     TypeError
-              If the file does is not a tiff file or does not have the .tiff or .tif extensions (non case-sensitive).
+        If the file does is not a tiff file or does not have the .tiff or .tif extensions (non case-sensitive).
     FileNotFoundError
-                     If the input file does not exist or is not in the 'input_files/' directory.
+        If the input file does not exist or is not in the 'input_files/' directory.
 
     See Also
     --------
@@ -58,14 +58,14 @@ def create_coordinate_grid(
     Parameters
     ----------
     scanning_rate: float
-                   Number of acquired points per unit length.
+        Number of acquired points per unit length.
     image_width: float
-                 Edge length of the image.
+        Edge length of the image.
     
     Returns
     -------
     tuple of two ndarray
-            A couple of 2-d coordinate matrices with the dimensions of the scanned area of the sample.
+        A couple of 2-d coordinate matrices with the dimensions of the scanned area of the sample.
 
     See Also
     --------
@@ -89,20 +89,20 @@ def plot_2d_image(
     Parameters
     -----------
     output_file_name: str
-                      Name of the output file that will be saved in the folder 'output_files/'.
+        Name of the output file that will be saved in the folder 'output_files/'.
     height_values: ndarray
-                   2-d grid with height values to be represented in the image.
+        2-d grid with height values to be represented in the image.
     coordinate_grid: tuple of two ndarray
-                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
+        Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
-               Set of colors to plot the image. Default is `Greys`.
+        Set of colors to plot the image. Default is `Greys`.
 
     Raises
     ------
     TypeError
-             If the inserted color map does not exist.
+        If the inserted color map does not exist.
     ValueError
-              If the scanning rate and the image length are not correct.
+        If the scanning rate and the image length are not correct.
 
     See Also
     --------
@@ -140,20 +140,20 @@ def plot_3d_image(
     Parameters:
     -----------
     output_file_name: str
-                      Name of the output file that will be saved in the folder 'output_files/'.
+        Name of the output file that will be saved in the folder 'output_files/'.
     height_values: ndarray
-                   2-d grid with height values to be represented in the image.
+        2-d grid with height values to be represented in the image.
     coordinate_grid: tuple of two ndarray
-                            Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
+        Couple of 2-d arrays representing the x and y real space coordinates for each image pixel.
     color_map: str
-               Set of colors to plot the image. Default is `Greys`.
+        Set of colors to plot the image. Default is `Greys`.
 
     Raises
     ------
     TypeError
-             If the inserted color map does not exist.
+        If the inserted color map does not exist.
     ValueError
-              If the scanning rate and the image length are not correct.
+        If the scanning rate and the image length are not correct.
 
     See Also
     --------
@@ -193,15 +193,15 @@ def custom_plot(
     Parameters
     ----------
     data: tuple of two ndarray
-          Data of the x and y axis of the plot, respectively.
+        Data of the x and y axis of the plot, respectively.
     ax_labels: tuple of two strings
-               labels for the x and y axis, respectively. Default is `("x", "y")`.
+        labels for the x and y axis, respectively. Default is `("x", "y")`.
     title: str
-           Title of the plot. Default is `"Plot"`.
+        Title of the plot. Default is `"Plot"`.
     color: str
-           Color of the plotted data. Default is `"black"`.
+        Color of the plotted data. Default is `"black"`.
     out_file_name: str
-                   Name of the output plot file. Default is `"output_plot.pdf"`.
+        Name of the output plot file. Default is `"output_plot.pdf"`.
 
     See Also
     --------

@@ -17,12 +17,12 @@ def height_distribution(
     Parameters
     -----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
 
     Returns
     -------
     tuple of two ndarray
-                        x and y axis of height distribution plot.
+        x and y axis of height distribution plot.
 
     See Also
     --------
@@ -52,16 +52,15 @@ def roughness_1d(
     Parameters
     -----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
     results_file: SmartFile
-                  File-like object that records results if its internal `enabled` flag is True.
+        File-like object that records results if its internal `enabled` flag is True.
 
     See Also
     --------
     np.std: function that computes the standard deviation along a certain axis.
     np.mean: function that computes the arithmetic mean along a certain axis.
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
-                  Its methods internally check wether this condition is met.
     roughness_2d: computes the roughness by exploiting the standard deviation of all the image data.
 
     Notes
@@ -93,15 +92,14 @@ def roughness_2d(
     Parameters
     -----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
     results_file: SmartFile
-                  File-like object that records results if its internal `enabled` flag is True.
+        File-like object that records results if its internal `enabled` flag is True.
 
     See Also
     --------
     np.std: function that computes the standard deviation along a certain axis.
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
-                  Its methods internally check wether this condition is met.
     roughness_1d: computes the roughness by mediating the 1-d roughness values of each fast scan line.
 
     Notes

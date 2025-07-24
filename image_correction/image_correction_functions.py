@@ -17,22 +17,21 @@ def common_plane_subtraction(
     Parameters
     ----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
     results_file: SmartFile
-                  File-like object that records results if its internal `enabled` flag is True.
+        File-like object that records results if its internal `enabled` flag is True.
                   
 
     Returns
     -------
     ndarray
-            2-d grid with the height values subtracted by the common plane.
+        2-d grid with the height values subtracted by the common plane.
 
     See Also
     --------
     np.meshgrid : Generates coordinate matrices from coordinate vectors.
     np.linalg.lstsq: function that returns the least-squares solution to a linear matrix equation.
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
-    Its methods internally check wether this condition is met.
     """
     nx, ny = height_values.shape
     x_ax = np.arange(nx)
@@ -67,20 +66,19 @@ def mean_drift_subtraction(
     Parameters
     ----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
     results_file: SmartFile
-                  File-like object that records results if its internal `enabled` flag is True.
+        File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
     ndarray
-            2-d grid with the height values corrected by mean subtraction.
+        2-d grid with the height values corrected by mean subtraction.
 
     See Also
     --------
     np.mean: function that computes the arithmetic mean along a certain axis.
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
-    Its methods internally check wether this condition is met.
     line_drift_subtraction: function that cancels out the drift along the fast scan direction by line subtraction.
     """
     ny = height_values.shape[0]
@@ -113,20 +111,19 @@ def linear_drift_subtraction(
     Parameters
     ----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
     results_file: SmartFile
-                  File-like object that records results if its internal `enabled` flag is True.
+        File-like object that records results if its internal `enabled` flag is True.
 
     Returns
     -------
     ndarray
-            2-d grid with the height values corrected by line subtraction.
+        2-d grid with the height values corrected by line subtraction.
     
     See Also
     --------
     np.linalg.lstsq: function that returns the least-squares solution to a linear matrix equation.
     sm.SmartFile: class to create files on which it is possible to write if their internal state `enabled` is set to True.
-    Its methods internally check wether this condition is met.
     mean_drift_subtraction: function that cancels out the drift along the fast scan direction by mean subtraction.
     """
     nx, ny = height_values.shape
@@ -162,12 +159,12 @@ def shift_min(
     Parameters
     ----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
 
     Returns
     -------
     ndarray
-            2-d grid with the height values subtracted by the minimum height value.
+        2-d grid with the height values subtracted by the minimum height value.
 
     See Also
     --------
@@ -188,12 +185,12 @@ def shift_mean(
     Parameters
     ----------
     height_values: ndarray
-                   2-d grid containing the height values.
+        2-d grid containing the height values.
 
     Returns
     -------
     ndarray
-            2-d grid with the height values subtracted by the mean height value.
+        2-d grid with the height values subtracted by the mean height value.
 
     See Also
     --------
