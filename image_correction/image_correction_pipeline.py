@@ -2,19 +2,22 @@ import warnings
 from . import image_correction_functions
 from functools import partial
 
-def build_image_correction_pipeline(settings, results_file):
+def build_image_correction_pipeline(
+    settings : dict, 
+    results_file : str
+    ) -> list:
     """
     Builds the pipeline of execution of the image correction functions.
 
     This functions defines a dictionary for each image correction action. For each action some keywords are defined 
     and to each keyword is associated a function (or a combination of them) inside the `image_correction_functions` module. 
-    For each action, a function is added to the execution pipeline based on the keywords parsed from the `settings` file,
-    which is in .json format. Some functions write their results in `results_file` (`sm.SmartFile` object), which internally 
+    For each action, a function is added to the execution pipeline based on the keywords parsed from the `settings` dictionary. 
+    Some functions write their results in `results_file` (`sm.SmartFile` object), which internally 
     can select wether the writing is performed or not.
 
     Parameters
     ----------
-    settings: .json file
+    settings: dict
         File containing the keywords to choose the executed functions
     results_file: SmartFile
         File-like object that records results if its internal `enabled` flag is True.
@@ -43,9 +46,9 @@ def build_image_correction_pipeline(settings, results_file):
     """
     pipeline = []
 
-    plane_sub_dict = {
-        "yes": partial(image_correction_functions.common_plane_subtraction, results_file=results_file),
-        "no": None
+    plane_subtraction_dict = {
+        "yes": lambda: partial(image_correction_functions.common_plane_subtraction, results_file=results_file),
+        "no": lambda: None
     }
 
     drift_correction_dict = {
@@ -59,38 +62,45 @@ def build_image_correction_pipeline(settings, results_file):
         ] * (plane_subtraction == "no") + [
             partial(image_correction_functions.mean_drift_subtraction, results_file=results_file)
         ],
-        "no": lambda plane_subtraction: []
+        "no": lambda plane_subtraction: None
     }
 
     data_shift_dict = {
-        "minimum": image_correction_functions.shift_min,
-        "mean": image_correction_functions.shift_mean,
-        "no": None
+        "minimum":lambda: image_correction_functions.shift_min,
+        "mean": lambda: image_correction_functions.shift_mean,
+        "no": lambda: None
     }
 
-    plane_sub = settings["image_correction"]["common_plane_subtraction"].lower()
-    drift_corr = settings["image_correction"]["line_drift_correction"].lower()
-    data_shift = settings["image_correction"]["data_shift"].lower()
+    plane_setting = settings["image_correction"]["common_plane_subtraction"].lower()
+    drift_setting = settings["image_correction"]["line_drift_correction"].lower()
+    data_shift_setting = settings["image_correction"]["data_shift"].lower()
 
-    if plane_sub not in plane_sub_dict:
-        raise TypeError("Invalid value for 'common_plane_subtraction'. " \
-        "Use 'yes' or 'no' (variable is not case-sensitive).")
-    if plane_sub_dict[plane_sub]:
-        pipeline.append(plane_sub_dict[plane_sub])
+    try:
+        plane_sub = plane_subtraction_dict[plane_setting]()
+    except KeyError:
+        raise TypeError("Invalid value for 'common_plane_subtraction'. "
+                        "Use 'yes' or 'no' (variable is not case-sensitive).") from None
+    if plane_sub is not None:
+        pipeline.append(plane_sub)
 
-    if drift_corr not in drift_correction_dict:
-        raise TypeError("Invalid value for 'line_drift_correction'. " \
-        "Use 'linear', 'mean' or 'no' (variable is not case-sensitive).")
-    drift_steplane_subtraction = drift_correction_dict[drift_corr](plane_sub)
-    if drift_corr != "no" and plane_sub == "no":
-        warnings.warn("Drift correction requested without plane subtraction. " \
-        "Plane subtraction was added automatically to ensure correct results.", UserWarning)
-    pipeline.extend(drift_steplane_subtraction)
+    try:
+        drift_corr = drift_correction_dict[drift_setting](plane_setting)
+    except KeyError:
+        raise TypeError("Invalid value for 'line_drift_correction'. "
+                        "Use 'linear', 'mean' or 'no' (variable is not case-sensitive).") from None
+    if drift_corr is not None:
+        pipeline.extend(drift_corr)
 
-    if data_shift not in data_shift_dict:
-        raise TypeError("Invalid value for 'data_shift'. " \
-        "Use 'minimum', 'mean' or 'no' (variable is not case-sensitive).")
-    if data_shift_dict[data_shift]:
-        pipeline.append(data_shift_dict[data_shift])
+    if drift_setting != "no" and plane_setting == "no":
+        warnings.warn("Drift correction requested without plane subtraction. "
+                    "Plane subtraction was added automatically to ensure correct results.", UserWarning)
+
+    try:
+        data_shift_corr = data_shift_dict[data_shift_setting]()
+    except KeyError:
+        raise TypeError("Invalid value for 'data_shift'. "
+                        "Use 'minimum', 'mean' or 'no' (variable is not case-sensitive).") from None
+    if data_shift_corr is not None:
+        pipeline.append(data_shift_corr)
 
     return pipeline
