@@ -1,5 +1,5 @@
 import numpy as np
-from AFM_analysis import smart_file as sm
+from afm_analysis import smart_file as sm
 
 def height_distribution(
     height_values : np.ndarray

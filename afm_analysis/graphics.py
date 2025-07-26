@@ -33,7 +33,8 @@ def read_tiff(
     tiff.TiffFile: class that reads the tiff file.
     tiff.TiffFile.asarray: method that converts the image in a numpy array.
     """
-    input_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "input_files", file_name)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    input_file_path = os.path.join(base_dir, "input_files", file_name)
     if not input_file_path.lower().endswith((".tiff", ".tif")):
         raise TypeError("Input file is not a tiff file or the typed input name does not end with .tiff or .tif. " \
                         "Please make sure the input file type is tiff and its name contains the .tiff or .tif extension " \
@@ -123,7 +124,8 @@ def plot_2d_image(
     color_bar = plt.colorbar(im, ax=ax)
     color_bar.set_label("Height (nm)")
     plt.tight_layout()
-    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_files", output_file_name)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_file_path = os.path.join(base_dir, "output_files", output_file_name)
     plt.savefig(output_file_path)
 
 def plot_3d_image(
@@ -175,7 +177,8 @@ def plot_3d_image(
     color_bar = plt.colorbar(surf, ax=ax)
     color_bar.set_label("Height (nm)")
     plt.tight_layout()
-    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_files", output_file_name)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_file_path = os.path.join(base_dir, "output_files", output_file_name)
     plt.savefig(output_file_path)
 
 def custom_plot(
@@ -216,5 +219,6 @@ def custom_plot(
     plt.ylabel(ax_labels[1])
     plt.grid("True")
     plt.tight_layout()
-    output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), output_file_name)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_file_path = os.path.join(base_dir, "output_files", output_file_name)
     plt.savefig(output_file_path)

@@ -1,12 +1,12 @@
 import argparse
 import json
 import os
-from AFM_analysis import graphics
+from afm_analysis import graphics
 from .image_correction import image_correction_pipeline
 from .data_analysis import data_analysis_pipeline
-from AFM_analysis import smart_file as sm
+from afm_analysis import smart_file as sm
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 parser = argparse.ArgumentParser("AFM image analyser")
 parser.add_argument('--results', nargs='?', const='results.txt', help="Write analysis results to a file (default: results.txt). " \

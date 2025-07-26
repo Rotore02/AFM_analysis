@@ -1,6 +1,6 @@
 import numpy as np
-from AFM_analysis.image_correction import image_correction_functions
-from AFM_analysis import smart_file as sm
+from afm_analysis.image_correction import image_correction_functions
+from afm_analysis import smart_file as sm
 import numpy as np
 
 def noisy_plane(

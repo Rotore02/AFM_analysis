@@ -1,5 +1,5 @@
-from AFM_analysis.image_correction import image_correction_pipeline
-from AFM_analysis.data_analysis import data_analysis_pipeline
+from afm_analysis.image_correction import image_correction_pipeline
+from afm_analysis.data_analysis import data_analysis_pipeline
 from .testing_image_correction import noisy_plane
 from functools import partial
 
@@ -60,8 +60,8 @@ def test_pipeline_is_correct(tmp_path):
     im_corr_pipeline = image_correction_pipeline.build_image_correction_pipeline(settings,tmp_path)
     im_corr_names_pipeline = get_func_name(im_corr_pipeline)
     expected_im_corr_pipeline = [
-        "AFM_analysis.image_correction.image_correction_functions.common_plane_subtraction",
-        "AFM_analysis.image_correction.image_correction_functions.mean_drift_subtraction"
+        "afm_analysis.image_correction.image_correction_functions.common_plane_subtraction",
+        "afm_analysis.image_correction.image_correction_functions.mean_drift_subtraction"
     ]
 
     assert im_corr_names_pipeline == expected_im_corr_pipeline
@@ -69,7 +69,7 @@ def test_pipeline_is_correct(tmp_path):
     data_an_pipeline = data_analysis_pipeline.build_data_analysis_pipeline(settings, tmp_path, height_values)
     data_an_names_pipeline = get_func_name(data_an_pipeline)
     expected_data_an_pipeline = [
-        "AFM_analysis.data_analysis.data_analysis_functions.roughness_1d"
+        "afm_analysis.data_analysis.data_analysis_functions.roughness_1d"
     ]
     assert data_an_names_pipeline == expected_data_an_pipeline
 

@@ -1,5 +1,5 @@
 from . import data_analysis_functions
-from AFM_analysis import graphics
+from afm_analysis import graphics
 from functools import partial
 from typing import TYPE_CHECKING
 import numpy as np
@@ -52,7 +52,7 @@ def build_data_analysis_pipeline(
             data_analysis_functions.height_distribution(height_values),
             ("height values (nm)", "counts"),
             "Height Values Distribution",
-            output_file_name="output_files/height_values_distribution.pdf"
+            output_file_name="height_values_distribution.pdf"
         ),
         "no": lambda: None
     }

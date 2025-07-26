@@ -1,8 +1,8 @@
-from AFM_analysis.data_analysis import data_analysis_functions
-from AFM_analysis.image_correction import image_correction_functions
+from afm_analysis.data_analysis import data_analysis_functions
+from afm_analysis.image_correction import image_correction_functions
 import numpy as np
-from AFM_analysis.tests.testing_image_correction import noisy_plane
-from AFM_analysis import smart_file as sm
+from tests.testing_image_correction import noisy_plane
+from afm_analysis import smart_file as sm
 
 def test_height_distribution_axis():
     """
