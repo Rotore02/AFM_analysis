@@ -1,10 +1,10 @@
 import argparse
 import json
 import os
-from AFM_analisys import graphics
+from AFM_analysis import graphics
 from .image_correction import image_correction_pipeline
 from .data_analysis import data_analysis_pipeline
-from AFM_analisys import smart_file as sm
+from AFM_analysis import smart_file as sm
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

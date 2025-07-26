@@ -1,10 +1,8 @@
 from . import data_analysis_functions
-from AFM_analisys import graphics
+from AFM_analysis import graphics
 from functools import partial
 from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    import numpy as np
+import numpy as np
 
 def build_data_analysis_pipeline(
     settings : dict, 
