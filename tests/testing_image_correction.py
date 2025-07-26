@@ -9,10 +9,10 @@ def noisy_plane(
     """
     Creates planar-distributed heights with or without noise.
 
-    Generates a plane of equation: z = a * x + b * y + c, 
-    where a = 0.5, b = 0.3, and c = 5. The result is a 2D NumPy array 
+    Generates a plane of equation: `z = a * x + b * y + c`, 
+    where `a = 0.5`, `b = 0.3`, and `c = 5`. The result is a 2D NumPy array 
     representing height values over a 10x10 grid. If `noise` is True, 
-    uniform random noise in the range [-0.01, 0.01] is added to the plane.
+    uniform random noise in the range `[-0.01, 0.01]` is added to the plane.
 
     Parameters
     ----------

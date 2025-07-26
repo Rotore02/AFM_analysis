@@ -49,7 +49,7 @@ def test_height_distribution_shape():
     """
     This function tests that the shape of the x and y axis of the height distribution histogram is consistent with the data.
 
-    Given the planar distributed height data generated using the `noisy_plane` function without noise, 
+    Given the planar distributed height data generated using the `tests.testing_image_correction.noisy_plane` function without noise, 
     this test generates the x (height values) and y (number of occurrences) axis of the heights distribution using the 
     `data_analysis.data_analysis_functions.height_distribution` function. After that, it checks that the x axis is exactly 
     composed of 100 values (bin centers) and that the sum of all the y axis values is equal to the amount of height data 

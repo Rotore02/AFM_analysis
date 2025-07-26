@@ -8,7 +8,7 @@ def common_plane_subtraction(
     """
     Cancels out the planar slope of the image.
 
-    Starting from the plane equation z = a*x + b*y + c, this function subtracts A*x + B*y + C to the height values 
+    Starting from the plane equation `z = a*x + b*y + c`, this function subtracts `A*x + B*y + C` to the height values 
     of the AFM image, where the coefficients A and B are obtained by minimizing the square displacement between the 
     plane and the height values. This is done to eliminate any planar inclination due to sample positioning in the 
     AFM microscope. The plane parameters will be written in the results_file if its internal state `enabled` 
@@ -101,7 +101,7 @@ def linear_drift_subtraction(
     """
     Cancels out the drift along the fast scan direction by line subtraction.
 
-    Starting from the line equation z = m*x + q, this function subtracts M*x + Q to the height values
+    Starting from the line equation `z = m*x + q`, this function subtracts `M*x + Q` to the height values
     of each fast scan direction (x axis direction) of the AFM image, where the coefficients M and Q are
     obtained by minimizing the square displacement between the line and the height values.
     This is done to eliminate systematic drifts due to temperature variations or friction between the 
