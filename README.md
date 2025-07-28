@@ -46,6 +46,15 @@ AFM_analysis/
 ## Installation and Execution
 
 ## Examples
+The following example shows the images corresponding to the data produced directly by the AFM (left) and after the correction with this program for a surface of **mesoporous silicon oxide (SiO2)**:
+
+![alt text](docs/images/2d_example_comparison.png)
+![alt text](docs/images/3d_example_comparison.png)
+
+The height distribution of the non-corrected (left) and corrected images can also be generated:
+
+![alt text](docs/images/height_dist_comparison.png)
+
 
 ## References
 [1]
