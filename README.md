@@ -14,7 +14,7 @@ which is the well known force damped oscillator model. In the case of a perfectl
 
 ## Repository Structure
 
-This section explains the repository structure. For a greater detail on each instance of the modules inside *afm_analysis*, you can check this [📚 code documentation](docs/code_documentation/index.html) and you can open it by following the [opening the documentation]() tutorial.
+This section explains the repository structure. For a greater detail on each instance of the modules inside *afm_analysis*, you can check this [📚 code documentation](docs/code_documentation/index.html) and you can open it by following the [opening the documentation](#opening-the-documentation) tutorial.
 
 The repository structure is the following:
 
@@ -35,18 +35,45 @@ AFM_analysis/
 │   ├── graphics.py
 │   └── smart_file.py
 ├── docs/
-│   └── images/
-│       ├── afm_structure.png
-│       └── amplitude_vs_frequency.png
+│   ├── code_documentation/
+│   │   ├── afm_analysis/
+│   │   │   ├── image_correction/
+│   │   │   │   ├── image_correction_functions.html
+│   │   │   │   └── image_correction_pipeline.html
+│   │   │   ├── data_analysis/
+│   │   │   │   ├── data_analysis_functions.html
+│   │   │   │   └── data_analysis_pipeline.html
+│   │   │   ├── image_correction.html
+│   │   │   ├── data_analysis.html
+│   │   │   ├── graphics.html
+│   │   │   ├── run_afm_analysis.html
+│   │   │   └── smart_file.html
+│   │   ├── afm_analysis.html
+│   │   ├── index.html
+│   │   └── search.js
+│   ├── images/
+│   │   ├── 2d_comparison_with_gw.png
+│   │   ├── 2d_example_comparison.png
+│   │   ├── 2d_example_pn_junc.png
+│   │   ├── 3d_comparison_with_gw.png
+│   │   ├── 3d_example_comparison.png
+│   │   ├── 3d_example_pn_junc.png
+│   │   ├── afm_structure.png
+│   │   ├── amplitude_vs_frequency.png
+│   │   ├── height_dist_comp_pn_junc.png
+│   │   └── height_dist_comparison.png
+│   └── input_file_examples/
+│       ├── mesoporous_SiO2.tiff
+│       └── pn_junction.tiff
 ├── input_files/
 ├── output_files/
+├── requirements.txt
 ├── settings.json
-├── tests
-│   ├── __init__.py
-│   ├── testing_image_correction.py
-│   ├── testing_data_analysis.py
-│   └── testing_pipeline.py
-└── requirements.txt   ####### TO UPDATE #####
+└── tests/
+    ├── __init__.py
+    ├── testing_data_analysis.py
+    ├── testing_image_correction.py
+    └── testing_pipeline.py
 ```
 -  ***afm_analysis/*** is the main package, containing the functions and classes that perform the image subtraction and the data analysis, along with the data reading and visualization:
 
@@ -59,6 +86,14 @@ AFM_analysis/
     - ***graphics.py*** is the module that contains the functions to manage the .tiff file reading from the *input_files/* folder. It also has the functions that generate and save the output images and the plots inside the *output_files/* folder.
 
     - ***smart_file.py*** contains the definition of the class *SmartFile*, which is a file-like object that is characterized by an `enabled` internal state. If `enabled = True`, the file object is created and the writing is allowed, if `enabled = False`, the file is not created and it is not possible to write on it. This class is used to create the *results.txt* file only if the user asks to (see ... for greater detail) and thus symplifies the functions inside *image_correction/* and *data_analysis/* that do not need to check for this user-set condition.
+
+- ***docs/*** is the folder that contains the images and files related to the documentation.
+
+   - ***code_documentation*** contains the documentation of the functions inside the *afm_analysis* package in .html format. See the [opening the documentation](#opening-the-documentation) tutorial to get details on how to open these files.
+
+   - ***images/*** contains images regarding the AFM behavior and examples for the documentation.
+
+   - ***input_file_examples/*** contains some input .tiff files that can be used to try this software.
 
 - ***input_files/*** is the folder where the .tiff file that will be analysed needs to be placed. The file name needs to contain the .tiff extension in order to be correctly found, otherwise an exception will rise.
 
@@ -73,14 +108,6 @@ AFM_analysis/
    - ***testing_data_analysis.py*** tests the functions inside the *data_analysis/data_analysis_functions.py* module.
 
    - ***testing_pipeline.py*** tests that the modules *image_correction/image_correction_pipeline.py* and *data_analysis/data_analysis_pipeline.py* work properly and build the correct function pipelines.
-
-- ***docs/*** is the folder that contains the images and files related to the documentation.
-
-   - ***code_documentation*** contains the documentation of the functions inside .....insert stuff.....
-
-   - ***images/*** contains images regarding the AFM behavior and examples for the documentation.
-
-   - ***input_file_examples/*** contains some input .tiff files that can be used to try this software.
 
 
 ## Getting Started
@@ -115,6 +142,11 @@ sudo dnf install nano
 or if you are using Arch Linux
 ```
 sudo pacman -S nano
+```
+
+4. A web browser is needed in order to open the code documentation in the folder *docs/code_documentation/*. In case you don't have one, you can install the snap firefox on Ubuntu with the following command
+```
+sudo snap install firefox
 ```
 
 ## Tutorial
@@ -168,7 +200,7 @@ and modify the file direcly from the terminal. The keywords in this file are bas
     }
 }
 ```
-The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/code_documentation/index.html) by using the [opening the documentation]() tutorial. Remember to save your changes with `Ctrl+S`, and after that exit the editor with `Ctrl+X`.
+The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/code_documentation/index.html) by using the [opening the documentation](#opening-the-documentation) tutorial. Remember to save your changes with `Ctrl+S`, and after that exit the editor with `Ctrl+X`.
 
 3. Now you are ready to run the analysis by executing one of these commands from the *AFM_analysis/* folder:
    - ```python3 -m afm_analysis.run_afm_analysis``` to run the analysis without generating any .txt results file.
@@ -190,6 +222,20 @@ in the terminal.
    - ```pytest testing_data_analysis.py``` to run the tests for the data analysis functions inside the *data_analysis_functions.py* module.
    - ```pytest testing_pipeline.py``` to run the tests to ensure the correctness of the function pipelines built by the *build_image_correction_pipeline.py* and *build_data_analysis_pipeline.py* module.
 
+### Opening the Documentation
+
+To open the documentation you just need to run the command
+```
+xdg-open relative/path/to/index.html
+```
+to open the .html documentation file with your default browser. If you are for example in the *AFM_analysis/* folder, you need to execute
+```
+xdg-open docs/code_documentation/index.html
+```
+or, if you installed snap firefox following the instructions on point 4. in the [getting started](#getting-started) section, you can also execute
+```
+firefox docs/code_documentation/index.html
+```
 ## Examples
 
 ### Mesoporous Silicon Oxide (SiO2)
