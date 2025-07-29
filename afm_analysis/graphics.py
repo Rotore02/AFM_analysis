@@ -4,18 +4,23 @@ import numpy as np
 import os
 
 def read_tiff(
-    file_name : str  
+    file_name : str,
+    height_scaling_factor : float 
 ) -> np.ndarray:
     """
     Reads the tiff file.
 
     Reads an input tiff file and returns as output a 2-d array 
     where each value is a corrisponding color in the tiff image.
+    The scaling factor can be selected, in order to represent the
+    heights with their true physical values.
 
     Parameters
     -----------
     file_name: str
         Name of the tiff file that needs to be read.
+    scaling_factor: float
+        Factor that multiplies raw height values.
 
     Returns
     --------
@@ -50,9 +55,17 @@ def read_tiff(
             "(extension is non case-sensitive).")
     
     if not os.path.isfile(input_file_path):
-        raise FileNotFoundError(f"File {file_name} not found")
-
-    return tiff.TiffFile(input_file_path).asarray()
+        raise FileNotFoundError(
+            f"File {file_name} not found in path {input_file_path}"
+        )
+    
+    if not isinstance(height_scaling_factor, float):
+        raise TypeError(
+            "The height scaling factor is not valid. "
+            "Please insert a numerical value."
+        )
+        
+    return tiff.TiffFile(input_file_path).asarray()*height_scaling_factor
 
 def create_coordinate_grid(
     scanning_rate : float, # Dimensions: [m^(-1)], is set manually in the AFM
@@ -280,5 +293,5 @@ def custom_plot(
     output_file_path = os.path.join(
         base_dir, "output_files", output_file_name
     )
-    
+
     plt.savefig(output_file_path)

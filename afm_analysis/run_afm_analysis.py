@@ -25,7 +25,8 @@ with open(settings_path, 'r') as settings_file:
     settings = json.load(settings_file)
 
 height_values = graphics.read_tiff(
-    settings["files_specifications"]["input_file_name"]
+    settings["files_specifications"]["input_file_name"],
+    settings["files_specifications"]["height_scaling_factor"]
 )
 
 im_corr_pipeline = image_correction_pipeline.build_image_correction_pipeline(

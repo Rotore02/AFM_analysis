@@ -4,7 +4,8 @@
         "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
         "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
         "scanning_rate": 256,
-        "image_length": 1
+        "image_length": 1,
+        "height_scaling_factor": 1
     },
 
     "image_correction": {
@@ -15,7 +16,7 @@
 
     "data_analysis": {
         "height_values_distribution": "yes",
-        "roughness": "no"
+        "roughness": "1d"
     },
 
     "graphics": {
