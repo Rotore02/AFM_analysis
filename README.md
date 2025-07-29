@@ -52,7 +52,7 @@ AFM_analysis/
 
     - ***data_analysis/*** is a package that contains the functions that perform the data analysis of the image. *data_analysis_functions.py* is the module that contains all the functions related to the statistical and mathematical operations that are performed, while *data_analysis_pipeline.py* contains a single function that manages the execution pipeline of those functions based on the *settings.json* file and raises the exceptions. The data analysis functions need to be executed after performing the image correction, to ensure correct results.
 
-    - ***run_afm_analysis.py*** is the script that manages the execution af all the functions. First of all, it reads the .tiff input file from the *input_files/* folder and enables the results file writing if specified by the execution command (see ... for greater detail). Than it executes the functions in the pipelines for both image correction and data analysis. Finally it generates the output images inside the *output_files/* folder.
+    - ***run_afm_analysis.py*** is the script that manages the execution af all the functions. First of all, it reads the .tiff input file from the *input_files/* folder and enables the results file writing if specified by the execution command (see step 3. of the [tutorial on how to run the analysis](#how-to-run-the-analysis) for greater detail). Than it executes the functions in the pipelines for both image correction and data analysis. Finally it generates the output images inside the *output_files/* folder.
 
     - ***graphics.py*** is the module that contains the functions to manage the .tiff file reading from the *input_files/* folder. It also has the functions that generate and save the output images and the plots inside the *output_files/* folder.
 
@@ -62,9 +62,9 @@ AFM_analysis/
 
 - ***output_files/*** is the folder where the output images and the data analysis results will be saved.
 
-- ***settings.json*** is the file that contains the options for each image correction and data analysis action that can be performed. The user can modify this file in order to select the preferred correction and analysis to be performed. See ... for greater detail on the possible keywords and options that can be selected by the user.
+- ***settings.json*** is the file that contains the options for each image correction and data analysis action that can be performed. The user can modify this file in order to select the preferred correction and analysis to be performed. See step 2. of the [tutorial on how to run the analysis](#how-to-run-the-analysis) section for greater detail on the possible keywords and options that can be selected by the user.
 
-- ***tests/*** is the folder that contains all the tests. See ... for greater detail on how to execute the tests.
+- ***tests/*** is the folder that contains all the tests. See the [tutorial on how to run the tests](#how-to-run-the-tests) for greater detail on how to execute the tests.
 
    - ***testing_image_correction.py*** tests the functions inside the *image_correction/image_correction_functions.py* module.
 
@@ -117,9 +117,9 @@ sudo pacman -S nano
 
 ## Tutorial
 
-This tutorial explains how to start the program and obtain the desired results assuming that the repository has been correctly cloned and the dependencies have been installed, as well as the text editor. If this is not the case, go check the ... section.
+This tutorial explains how to start the program and obtain the desired results assuming that the repository has been correctly cloned and the dependencies have been installed, as well as the text editor. If this is not the case, go check the [Getting Started](#getting-started) section.
 
-### How to: run the analysis
+### How To: Run the Analysis
 
 In this tutorial we perform the analysis of the *mesoporous_SiO2.tiff* file, which is present in the folder *docs/input_file_examples/*.
 
@@ -173,12 +173,25 @@ The *scanning_rate* and the *image_length* are known from the experimental setup
    - ```python3 -m afm_analysis.run_afm_analysis --results``` run the analysis and generate a .txt results with default name *results.txt*.
    - ```python3 -m afm_analysis.run_afm_analysis --results filename.txt``` run the analysis and generate a .txt results with name *filename.txt*.
 
-4. You can check the generated results in the *output_files/* folder.
+4. You can check the generated results in the *output_files/* folder, which should be equal to the ones presented in the [mesoporous silicon oxide](#mesoporous-silicon-oxide-sio2) example.
+
+### How To: Run the Tests 
+
+1. Place yourself in the *tests/* folder. If you are in the *AFM_analysis/* one, you can do
+```
+cd tests
+```
+in the terminal.
+
+2. You can run each test module with pytest by executing one of these commands from the *tests/* folder:
+   - ```pytest testing_image_correction.py``` to run the tests for the image correction functions inside the *image_correction_functions.py* module.
+   - ```pytest testing_data_analysis.py``` to run the tests for the data analysis functions inside the *data_analysis_functions.py* module.
+   - ```pytest testing_pipeline.py``` to run the tests to ensure the correctness of the function pipelines built by the *build_image_correction_pipeline.py* and *build_data_analysis_pipeline.py* module.
 
 ## Examples
 
 ### Mesoporous Silicon Oxide (SiO2)
-The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (See the ... section to go through how these specific results have been obtained). The *settings.json* file used to perform this analysis is the following:
+The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (See the [tutorial on how to run the analysis](#how-to-run-the-analysis) to go through how these specific results have been obtained). The *settings.json* file used to perform this analysis is the following:
 
 ```
 {
@@ -247,6 +260,66 @@ We can compare the images obtained with this software (left) with the ones gener
 ![alt text](docs/examples/3d_comparison_with_gw.png)
 
 The heights scales are different, since the values stored in the .tiff file depend on the specific instrument and acquisition software and must be known ad priori (see [3] for greater detail).
+
+### Organic pn Junction
+
+The following example shows the image correction results and the data analysis of a surface of an organic pn junction. The *settings.json* file used to perform this analysis is the following:
+
+```
+{
+    "files_specifications": {
+        "input_file_name": "pn_junction.tiff",
+        "2D_image_output_file_name": "pn_junction_output_2D.pdf",
+        "3D_image_output_file_name": "pn_junction_output_3D.pdf",
+        "scanning_rate": 256,
+        "image_length": 1,
+        "height_scaling_factor": 1
+    },
+
+    "image_correction": {
+        "common_plane_subtraction": "yes",
+        "line_drift_correction": "mean",
+        "data_shift": "mean"
+    },
+
+    "data_analysis": {
+        "height_values_distribution": "yes",
+        "roughness": "2d"
+    },
+
+    "graphics": {
+        "color_map": "magma"
+    }
+}
+```
+The following images represent the data produced directly by the AFM (left) and after the correction with this program with this settings:
+
+![alt text](docs/examples/2d_example_pn_junc.png)
+![alt text](docs/examples/3d_example_pn_junc.png)
+
+The height distribution of the non-corrected (left) and corrected images is also generated:
+
+![alt text](docs/examples/height_dist_comp_pn_junc.png)
+
+The generated results file is the following:
+
+```
+COMMON PLANE SUBTRACTION
+plane equation: z = a*x + b*y + c
+a = -0.029906002785959514
+b = 0.5211801827103912
+c = 58.03533258697865
+----------------------------
+
+MEAN DRIFT SUBTRACTION
+average mean value = 5.812017533912694e-14
+standard deviation = 9.364956513407211
+----------------------------
+
+2D ROUGHNESS
+roughness = 21.657787749953247 nm
+----------------------------
+```
 
 ## References
 
