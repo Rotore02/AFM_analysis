@@ -112,6 +112,8 @@ AFM_analysis/
 
 ## Getting Started
 
+This program is tested working in the python 3.10 version.
+
 1. Clone the repository by typing on the terminal the following command
 ```
 git clone https://github.com/Rotore02/AFM_analysis.git
@@ -171,7 +173,7 @@ Every file that needs to be analysed must be placed in the *input_files/* direct
 ```
 nano settings.json
 ```
-and modify the file direcly from the terminal. The keywords in this file are based on the kind of correction and analyses that you want to perform. The following is the *settings.json* file and the comments are the possible options.
+and modify the file direcly from the terminal. The keywords in this file are based on the kind of correction and analyses that you want to perform. The following is the *settings.json* file and the comments are the possible options (note that .json files do not support comments, so remember to delete them if you copy and paste this file).
 
 ```
 {
