@@ -14,6 +14,8 @@ which is the well known force damped oscillator model. In the case of a perfectl
 
 ## Repository Structure
 
+This section explains the repository structure. For a greater detail on each instance of the modules inside *afm_analysis*, you can check this [📚 code documentation](docs/code_documentation/index.html) and you can open it by following the [opening the documentation]() tutorial.
+
 The repository structure is the following:
 
 ```
@@ -166,7 +168,7 @@ and modify the file direcly from the terminal. The keywords in this file are bas
     }
 }
 ```
-The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. Remember to save your changes with `Ctrl+S`, and after that exit the editor with `Ctrl+X`.
+The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/code_documentation/index.html) by using the [opening the documentation]() tutorial. Remember to save your changes with `Ctrl+S`, and after that exit the editor with `Ctrl+X`.
 
 3. Now you are ready to run the analysis by executing one of these commands from the *AFM_analysis/* folder:
    - ```python3 -m afm_analysis.run_afm_analysis``` to run the analysis without generating any .txt results file.
