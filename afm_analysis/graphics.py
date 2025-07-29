@@ -33,6 +33,8 @@ def read_tiff(
     TypeError
         If the file does is not a tiff file or does not have the
         .tiff or .tif extensions (non case-sensitive).
+    TypeError
+        If the height scaling factor is not a numerical value.
     FileNotFoundError
         If the input file does not exist or is not in the 
         'input_files/' directory.
@@ -48,10 +50,10 @@ def read_tiff(
 
     if not input_file_path.lower().endswith((".tiff", ".tif")):
         raise TypeError(
-            "Input file is not a tiff file or the typed input " \
-            "name does not end with .tiff or .tif. Please make " \
-            "sure the input file type is tiff and its name " \
-            "contains the .tiff or .tif extension " \
+            "Input file is not a tiff file or the typed input " 
+            "name does not end with .tiff or .tif. Please make " 
+            "sure the input file type is tiff and its name " 
+            "contains the .tiff or .tif extension " 
             "(extension is non case-sensitive).")
     
     if not os.path.isfile(input_file_path):
@@ -59,7 +61,9 @@ def read_tiff(
             f"File {file_name} not found in path {input_file_path}"
         )
     
-    if not isinstance(height_scaling_factor, float):
+    try:
+        height_scaling_factor = float(height_scaling_factor)
+    except TypeError:
         raise TypeError(
             "The height scaling factor is not valid. "
             "Please insert a numerical value."

@@ -81,14 +81,104 @@ AFM_analysis/
    - ***input_file_examples/*** contains some input .tiff files that can be used to try this software.
 
 
-## Installation and Execution
+## Getting Started
+
+1. Clone the repository by typing on the terminal the following command
+```
+git clone https://github.com/Rotore02/AFM_analysis.git
+```
+If the repository has been correctly cloned in your current path location, a folder *AFM_analysis* should appear when executing
+```
+ls
+```
+in the terminal.
+
+2. Move to the *AFM_analysis* folder using
+```
+cd AFM_analysis
+``` 
+and install the required dependencies by executing
+```
+pip install -r requirements.txt
+```
+
+3. A text editor is necessary to modify and save the file *settings.json*. In case you don't have one, you can install nano on your linux distribution. If you are using Debian or Ubuntu, you can execute
+```
+sudo apt install nano
+```
+if you are using Fedora
+```
+sudo dnf install nano
+```
+or if you are using Arch Linux
+```
+sudo pacman -S nano
+```
 
 ## Tutorial
+
+This tutorial explains how to start the program and obtain the desired results assuming that the repository has been correctly cloned and the dependencies have been installed, as well as the text editor. If this is not the case, go check the ... section.
+
+### How to: run the analysis
+
+In this tutorial we perform the analysis of the *mesoporous_SiO2.tiff* file, which is present in the folder *docs/input_file_examples/*.
+
+1. Place yourself in the *AFM_analysis* folder and move the *mesoporous_SiO2.tiff* file from the *docs/input_file_examples/* folder to the *input_files/* one by executing
+```
+cp docs/tutorials/nomefile.tiff input_files/
+```
+and verify that it has correctly been copied by using
+```
+ls input_files/
+```
+Every file that needs to be analysed must be placed in the *input_files/* directory, so if you are using your own AFM data, make sure to place them in this directory. 
+
+2. Now you can open and modify the *settings.json* file with your text editor. In case you are using nano, you can execute
+```
+nano settings.json
+```
+and modify the file direcly from the terminal. The keywords in this file are based on the kind of correction and analyses that you want to perform. The following is the *settings.json* file and the comments are the possible options.
+
+```
+{
+    "files_specifications": {
+        "input_file_name": "mesoporous_SiO2.tiff",
+        "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
+        "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
+        "scanning_rate": 256,
+        "image_length": 1,
+        "height_scaling_factor": 1
+    },
+
+    "image_correction": {
+        "common_plane_subtraction": "yes",    # yes / no
+        "line_drift_correction": "linear",    # linear / mean
+        "data_shift": "minimum"               # minimum / mean
+    },
+
+    "data_analysis": {
+        "height_values_distribution": "yes",  # yes / no
+        "roughness": "1d"                     # 1d / 2d / no
+    },
+
+    "graphics": {
+        "color_map": "viridis"                # options listed in [1]
+    }
+}
+```
+The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. Remember to save your changes with `Ctrl+S`, and after that exit the editor with `Ctrl+X`.
+
+3. Now you are ready to run the analysis by executing one of these commands from the *AFM_analysis/* folder:
+   - ```python3 -m afm_analysis.run_afm_analysis``` to run the analysis without generating any .txt results file.
+   - ```python3 -m afm_analysis.run_afm_analysis --results``` run the analysis and generate a .txt results with default name *results.txt*.
+   - ```python3 -m afm_analysis.run_afm_analysis --results filename.txt``` run the analysis and generate a .txt results with name *filename.txt*.
+
+4. You can check the generated results in the *output_files/* folder.
 
 ## Examples
 
 ### Mesoporous Silicon Oxide (SiO2)
-The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (SiO2). The *settings.json* file used to perform this analysis is the following:
+The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (See the ... section to go through how these specific results have been obtained). The *settings.json* file used to perform this analysis is the following:
 
 ```
 {
@@ -150,15 +240,16 @@ standard deviation = 0.8500021157680003 nm
 ----------------------------
 ```
 
-We can compare the images obtained with this software (left) with the ones generated from *Gwyddion* [1] (right), a commonly used software for AFM data analysis and image correction:
+We can compare the images obtained with this software (left) with the ones generated from *Gwyddion* [2] (right), a commonly used software for AFM data analysis and image correction:
 
 ![alt text](docs/examples/2d_comparison_with_gw.png)
 
 ![alt text](docs/examples/3d_comparison_with_gw.png)
 
-The heights scales are different, since the values stored in the .tiff file depend on the specific instrument and acquisition software and must be known ad priori (see [2] for greater detail).
+The heights scales are different, since the values stored in the .tiff file depend on the specific instrument and acquisition software and must be known ad priori (see [3] for greater detail).
 
 ## References
 
-[1] David Nečas, Petr Klapetek, Gwyddion: an open-source software for SPM data analysis, Cent. Eur. J. Phys. 10(1) (2012) 181-188. Gwyddion documentation url: https://gwyddion.net/. <br>
-[2] https://gwyddion.net/documentation/user-guide-en/specific-data-import.html
+[1] https://matplotlib.org/stable/users/explain/colors/colormaps.html <br>
+[2] David Nečas, Petr Klapetek, Gwyddion: an open-source software for SPM data analysis, Cent. Eur. J. Phys. 10(1) (2012) 181-188. Gwyddion documentation url: https://gwyddion.net/. <br>
+[3] https://gwyddion.net/documentation/user-guide-en/specific-data-import.html
