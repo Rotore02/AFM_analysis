@@ -1,3 +1,12 @@
+"""
+testing_data_analysis module
+===================
+This module tests the functions inside the 
+'data_analysis/data_analysis_functions.py' module.
+
+Author: Alessandro Rotondi
+"""
+
 from afm_analysis.data_analysis import data_analysis_functions
 from afm_analysis.image_correction import image_correction_functions
 import numpy as np

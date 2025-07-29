@@ -1,3 +1,17 @@
+"""
+data_analysis_pipeline module
+===================
+This module contains a single function that creates the pipeline 
+of functions to perform data analysis.
+
+This module contains a function that, based on a settings 
+dictionary, creates the pipeline of functions to perform the
+data analysis of the AFM image data. The functions are taken 
+from the 'data_analysis_functions' module.
+
+Author: Alessandro Rotondi
+"""
+
 from . import data_analysis_functions
 from afm_analysis import graphics
 from functools import partial

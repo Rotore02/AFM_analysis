@@ -1,3 +1,20 @@
+"""
+run_afm_analysis module
+===================
+This module is the main script of the project. It manages the
+execution of the functions in the pipelines.
+
+This script reads the .tiff input file from the *input_files/* folder 
+and enables the results file writing if specified by the 
+execution command (see step 3. of 'Running the Analysis' in the 
+'Tutorial' section of the README.md). It executes the 
+functions in the pipelines for both image correction and data 
+analysis. Finally it generates the output images inside the 
+'output_files/' folder.
+
+Author: Alessandro Rotondi
+"""
+
 import argparse
 import json
 import os

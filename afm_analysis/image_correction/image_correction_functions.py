@@ -1,3 +1,17 @@
+"""
+image_correction_functions module
+===================
+This module contains the functions that perform image
+correction operations.
+
+This module provides a set of functions that modify
+the height values of the AFM raw image data. Each function
+manages the correction of a certain kind of systematic
+error that occours during an AFM experiment.
+
+Author: Alessandro Rotondi
+"""
+
 import numpy as np
 from afm_analysis import smart_file as sm
 

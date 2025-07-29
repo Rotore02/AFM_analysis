@@ -1,3 +1,18 @@
+"""
+graphics module
+===================
+This module contains the functions to perform graphical
+operations
+
+This module contains the functions to manage the .tiff file reading
+from the *input_files/* folder and the function to generate the 
+coordinate matrices on the x-y plane. It also has the functions that 
+generate and save the output images and the plots inside the 
+*output_files/* folder. 
+
+Author: Alessandro Rotondi
+"""
+
 import tifffile as tiff
 import matplotlib.pyplot as plt
 import numpy as np

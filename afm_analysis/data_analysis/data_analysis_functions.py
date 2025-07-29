@@ -1,3 +1,17 @@
+"""
+data_analysis_functions module
+===================
+This module contains the functions that perform data analysis 
+operations.
+
+This module provides a set of functions that perform some
+mathematical or statistical operations on the already corrected 
+height values obtained from an AFM experiment. Each function performs 
+a single operation and provides data with a specific meaning.
+
+Author: Alessandro Rotondi
+"""
+
 import numpy as np
 from afm_analysis import smart_file as sm
 

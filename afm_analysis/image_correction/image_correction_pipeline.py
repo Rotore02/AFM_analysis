@@ -1,3 +1,17 @@
+"""
+image_correction_pipeline module
+===================
+This module contains a single function that creates a pipeline 
+of functions to perform image correction.
+
+This module contains a function that, based on a settings 
+dictionary, creates the pipeline of functions to correct
+the AFM image data. The functions are taken from the
+'image_correction_functions' module.
+
+Author: Alessandro Rotondi
+"""
+
 import warnings
 from . import image_correction_functions
 from functools import partial

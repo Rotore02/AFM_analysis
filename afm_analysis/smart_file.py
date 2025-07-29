@@ -1,3 +1,11 @@
+"""
+smart_file module
+===================
+This module defines the class SmartFile and its methods. 
+
+Author: Alessandro Rotondi
+"""
+
 class SmartFile:
     """
     Can be used to build a file-like object in which one can 

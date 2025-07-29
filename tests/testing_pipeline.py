@@ -1,3 +1,14 @@
+"""
+testing_data_analysis module
+===================
+This module checks that the modules 
+*image_correction/image_correction_pipeline.py* and 
+*data_analysis/data_analysis_pipeline.py* work properly 
+and build the correct function pipelines.
+
+Author: Alessandro Rotondi
+"""
+
 from afm_analysis.image_correction import image_correction_pipeline
 from afm_analysis.data_analysis import data_analysis_pipeline
 from .testing_image_correction import noisy_plane

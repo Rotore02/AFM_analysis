@@ -44,7 +44,7 @@ AFM_analysis/
 │   ├── testing_image_correction.py
 │   ├── testing_data_analysis.py
 │   └── testing_pipeline.py
-└── requirements.txt
+└── requirements.txt   ####### TO UPDATE #####
 ```
 -  ***afm_analysis/*** is the main package, containing the functions and classes that perform the image subtraction and the data analysis, along with the data reading and visualization:
 
@@ -52,7 +52,7 @@ AFM_analysis/
 
     - ***data_analysis/*** is a package that contains the functions that perform the data analysis of the image. *data_analysis_functions.py* is the module that contains all the functions related to the statistical and mathematical operations that are performed, while *data_analysis_pipeline.py* contains a single function that manages the execution pipeline of those functions based on the *settings.json* file and raises the exceptions. The data analysis functions need to be executed after performing the image correction, to ensure correct results.
 
-    - ***run_afm_analysis.py*** is the script that manages the execution af all the functions. First of all, it reads the .tiff input file from the *input_files/* folder and enables the results file writing if specified by the execution command (see step 3. of the [tutorial on how to run the analysis](#how-to-run-the-analysis) for greater detail). Than it executes the functions in the pipelines for both image correction and data analysis. Finally it generates the output images inside the *output_files/* folder.
+    - ***run_afm_analysis.py*** is the script that manages the execution af all the functions. First of all, it reads the .tiff input file from the *input_files/* folder and enables the results file writing if specified by the execution command (see step 3. of the [tutorial on how to run the analysis](#running-the-analysis) for greater detail). Than it executes the functions in the pipelines for both image correction and data analysis. Finally it generates the output images inside the *output_files/* folder.
 
     - ***graphics.py*** is the module that contains the functions to manage the .tiff file reading from the *input_files/* folder. It also has the functions that generate and save the output images and the plots inside the *output_files/* folder.
 
@@ -62,9 +62,9 @@ AFM_analysis/
 
 - ***output_files/*** is the folder where the output images and the data analysis results will be saved.
 
-- ***settings.json*** is the file that contains the options for each image correction and data analysis action that can be performed. The user can modify this file in order to select the preferred correction and analysis to be performed. See step 2. of the [tutorial on how to run the analysis](#how-to-run-the-analysis) section for greater detail on the possible keywords and options that can be selected by the user.
+- ***settings.json*** is the file that contains the options for each image correction and data analysis action that can be performed. The user can modify this file in order to select the preferred correction and analysis to be performed. See step 2. of the [tutorial on how to run the analysis](#running-the-analysis) section for greater detail on the possible keywords and options that can be selected by the user.
 
-- ***tests/*** is the folder that contains all the tests. See the [tutorial on how to run the tests](#how-to-run-the-tests) for greater detail on how to execute the tests.
+- ***tests/*** is the folder that contains all the tests. See the [tutorial on how to run the tests](#running-the-tests) for greater detail on how to execute the tests.
 
    - ***testing_image_correction.py*** tests the functions inside the *image_correction/image_correction_functions.py* module.
 
@@ -74,9 +74,9 @@ AFM_analysis/
 
 - ***docs/*** is the folder that contains the images and files related to the documentation.
 
-   - ***examples/*** contains output examples used for the documentation.
+   - ***code_documentation*** contains the documentation of the functions inside .....insert stuff.....
 
-   - ***images/*** contains images regarding the AFM behavior and introduction for the documentation.
+   - ***images/*** contains images regarding the AFM behavior and examples for the documentation.
 
    - ***input_file_examples/*** contains some input .tiff files that can be used to try this software.
 
@@ -119,7 +119,7 @@ sudo pacman -S nano
 
 This tutorial explains how to start the program and obtain the desired results assuming that the repository has been correctly cloned and the dependencies have been installed, as well as the text editor. If this is not the case, go check the [Getting Started](#getting-started) section.
 
-### How To: Run the Analysis
+### Running the Analysis
 
 In this tutorial we perform the analysis of the *mesoporous_SiO2.tiff* file, which is present in the folder *docs/input_file_examples/*.
 
@@ -175,7 +175,7 @@ The *scanning_rate* and the *image_length* are known from the experimental setup
 
 4. You can check the generated results in the *output_files/* folder, which should be equal to the ones presented in the [mesoporous silicon oxide](#mesoporous-silicon-oxide-sio2) example.
 
-### How To: Run the Tests 
+### Running the Tests 
 
 1. Place yourself in the *tests/* folder. If you are in the *AFM_analysis/* one, you can do
 ```
@@ -191,7 +191,7 @@ in the terminal.
 ## Examples
 
 ### Mesoporous Silicon Oxide (SiO2)
-The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (See the [tutorial on how to run the analysis](#how-to-run-the-analysis) to go through how these specific results have been obtained). The *settings.json* file used to perform this analysis is the following:
+The following example shows the image correction results and the data analysis of a surface of mesoporous silicon oxide (See the [tutorial on how to run the analysis](#running-the-analysis) to go through how these specific results have been obtained). The *settings.json* file used to perform this analysis is the following:
 
 ```
 {
@@ -222,12 +222,12 @@ The following example shows the image correction results and the data analysis o
 ```
 The following images represent the data produced directly by the AFM (left) and after the correction with this program with this settings:
 
-![alt text](docs/examples/2d_example_comparison.png)
-![alt text](docs/examples/3d_example_comparison.png)
+![alt text](docs/images/2d_example_comparison.png)
+![alt text](docs/images/3d_example_comparison.png)
 
 The height distribution of the non-corrected (left) and corrected images is also generated:
 
-![alt text](docs/examples/height_dist_comparison.png)
+![alt text](docs/images/height_dist_comparison.png)
 
 The generated results file is the following:
 
@@ -255,9 +255,9 @@ standard deviation = 0.8500021157680003 nm
 
 We can compare the images obtained with this software (left) with the ones generated from *Gwyddion* [2] (right), a commonly used software for AFM data analysis and image correction:
 
-![alt text](docs/examples/2d_comparison_with_gw.png)
+![alt text](docs/images/2d_comparison_with_gw.png)
 
-![alt text](docs/examples/3d_comparison_with_gw.png)
+![alt text](docs/images/3d_comparison_with_gw.png)
 
 The heights scales are different, since the values stored in the .tiff file depend on the specific instrument and acquisition software and must be known ad priori (see [3] for greater detail).
 
@@ -294,12 +294,12 @@ The following example shows the image correction results and the data analysis o
 ```
 The following images represent the data produced directly by the AFM (left) and after the correction with this program with this settings:
 
-![alt text](docs/examples/2d_example_pn_junc.png)
-![alt text](docs/examples/3d_example_pn_junc.png)
+![alt text](docs/images/2d_example_pn_junc.png)
+![alt text](docs/images/3d_example_pn_junc.png)
 
 The height distribution of the non-corrected (left) and corrected images is also generated:
 
-![alt text](docs/examples/height_dist_comp_pn_junc.png)
+![alt text](docs/images/height_dist_comp_pn_junc.png)
 
 The generated results file is the following:
 
