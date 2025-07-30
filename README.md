@@ -35,7 +35,7 @@ AFM_analysis/
 │   ├── graphics.py
 │   └── smart_file.py
 ├── docs/
-│   ├── code_documentation/
+│   ├── API_documentation/
 │   │   ├── afm_analysis/
 │   │   │   ├── image_correction/
 │   │   │   │   ├── image_correction_functions.html
