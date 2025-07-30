@@ -226,11 +226,11 @@ in the terminal.
 
 ### Opening the Documentation
 
-To open the documentation you just need to run the command
+To open the documentation, you just need to run the command
 ```
 xdg-open relative/path/to/index.html
 ```
-to open the .html documentation file with your default browser. If you are for example in the *AFM_analysis/* folder, you need to execute
+to use your default browser. As an example, if you are in the *AFM_analysis/* folder, you need to execute
 ```
 xdg-open docs/code_documentation/index.html
 ```
