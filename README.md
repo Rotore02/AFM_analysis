@@ -250,7 +250,7 @@ The following example shows the image correction results and the data analysis o
         "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
         "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
         "scanning_rate": 256,
-        "image_length": 1
+        "image_length": 1,
         "height_scaling_factor": 1
     },
 
