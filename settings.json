@@ -1,25 +1,25 @@
 {
     "files_specifications": {
-        "input_file_name": "pn_junction.tiff",
-        "2D_image_output_file_name": "pn_junction_output_2D.pdf",
-        "3D_image_output_file_name": "pn_junction_output_3D.pdf",
+        "input_file_name": "mesoporous_SiO2.tiff",
+        "2D_image_output_file_name": "mesoporous_SiO2_output_2D.pdf",
+        "3D_image_output_file_name": "mesoporous_SiO2_output_3D.pdf",
         "scanning_rate": 256,
-        "image_length": 1,
+        "image_length": 1
         "height_scaling_factor": 1
     },
 
     "image_correction": {
         "common_plane_subtraction": "yes",
-        "line_drift_correction": "mean",
-        "data_shift": "mean"
+        "line_drift_correction": "linear",
+        "data_shift": "minimum"
     },
 
     "data_analysis": {
         "height_values_distribution": "yes",
-        "roughness": "2d"
+        "roughness": "1d"
     },
 
     "graphics": {
-        "color_map": "magma"
+        "color_map": "viridis"
     }
 }
