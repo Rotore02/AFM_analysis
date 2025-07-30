@@ -159,9 +159,9 @@ This tutorial explains how to start the program and obtain the desired results a
 
 In this tutorial we perform the analysis of the *mesoporous_SiO2.tiff* file, which is present in the folder *docs/input_file_examples/*.
 
-1. Place yourself in the *AFM_analysis* folder and move the *mesoporous_SiO2.tiff* file from the *docs/input_file_examples/* folder to the *input_files/* one by executing
+1. Place yourself in the *AFM_analysis* folder and copy the *mesoporous_SiO2.tiff* file from the *docs/input_file_examples/* folder to the *input_files/* one by executing
 ```
-cp docs/tutorials/nomefile.tiff input_files/
+cp docs/input_file_examples/mesoporous_SiO2.tiff input_files/
 ```
 and verify that it has correctly been copied by using
 ```
@@ -198,16 +198,16 @@ and modify the file direcly from the terminal. The keywords in this file are bas
     },
 
     "graphics": {
-        "color_map": "viridis"                # options listed in [1]
+        "color_map": "viridis"                # check [1] for all options
     }
 }
 ```
 The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/code_documentation/index.html) by using the [opening the documentation](#opening-the-documentation) tutorial. Remember to save your changes before exiting the editor.
 
 3. Now you are ready to run the analysis by executing one of these commands from the *AFM_analysis/* folder:
-   - ```python3 -m afm_analysis.run_afm_analysis``` to run the analysis without generating any .txt results file.
-   - ```python3 -m afm_analysis.run_afm_analysis --results``` run the analysis and generate a .txt results with default name *results.txt*.
-   - ```python3 -m afm_analysis.run_afm_analysis --results filename.txt``` run the analysis and generate a .txt results with name *filename.txt*.
+   - `python3 -m afm_analysis.run_afm_analysis` to run the analysis without generating any .txt results file.
+   - `python3 -m afm_analysis.run_afm_analysis --results` run the analysis and generate a .txt results with default name *results.txt*.
+   - `python3 -m afm_analysis.run_afm_analysis --results filename.txt` run the analysis and generate a .txt results with name *filename.txt*.
 
 4. You can check the generated results in the *output_files/* folder, which should be equal to the ones presented in the [mesoporous silicon oxide](#mesoporous-silicon-oxide-sio2) example.
 
@@ -220,9 +220,9 @@ cd tests
 in the terminal.
 
 2. You can run each test module with pytest by executing one of these commands from the *tests/* folder:
-   - ```pytest testing_image_correction.py``` to run the tests for the image correction functions inside the *image_correction_functions.py* module.
-   - ```pytest testing_data_analysis.py``` to run the tests for the data analysis functions inside the *data_analysis_functions.py* module.
-   - ```pytest testing_pipeline.py``` to run the tests to ensure the correctness of the function pipelines built by the *build_image_correction_pipeline.py* and *build_data_analysis_pipeline.py* module.
+   - `pytest testing_image_correction.py` to run the tests for the image correction functions inside the *image_correction_functions.py* module.
+   - `pytest testing_data_analysis.py` to run the tests for the data analysis functions inside the *data_analysis_functions.py* module.
+   - `pytest testing_pipeline.py` to run the tests to ensure the correctness of the function pipelines built by the *build_image_correction_pipeline.py* and *build_data_analysis_pipeline.py* module.
 
 ### Opening the Documentation
 
@@ -232,11 +232,11 @@ xdg-open relative/path/to/index.html
 ```
 to use your default browser. As an example, if you are in the *AFM_analysis/* folder, you need to execute
 ```
-xdg-open docs/code_documentation/index.html
+xdg-open docs/API_documentation/index.html
 ```
 or, if you installed snap firefox following the instructions on point 4. in the [getting started](#getting-started) section, you can also execute
 ```
-firefox docs/code_documentation/index.html
+firefox docs/API_documentation/index.html
 ```
 ## Examples
 
