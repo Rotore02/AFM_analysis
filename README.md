@@ -14,7 +14,7 @@ which is the well known force damped oscillator model. In the case of a perfectl
 
 ## Repository Structure
 
-This section explains the repository structure. For a greater detail on each instance of the modules inside *afm_analysis*, you can check the [📚 code documentation](docs/code_documentation/index.html) and you can open it by following the [opening the documentation](#opening-the-documentation) tutorial.
+This section explains the repository structure. For a greater detail on each instance of the modules inside *afm_analysis*, you can check the [📚 code documentation](docs/API_documentation/) and you can open it by following the [opening the documentation tutorial](#opening-the-documentation).
 
 The repository structure is the following:
 
@@ -89,7 +89,7 @@ AFM_analysis/
 
 - ***docs/*** is the folder that contains the images and files related to the documentation.
 
-   - ***code_documentation*** contains the documentation of the functions inside the *afm_analysis* package in .html format. See the [opening the documentation](#opening-the-documentation) tutorial to get details on how to open these files.
+   - ***API_documentation*** contains the documentation of the functions inside the *afm_analysis* package in .html format. See the [opening the documentation tutorial](#opening-the-documentation) to get details on how to open these files.
 
    - ***images/*** contains images regarding the AFM behavior and examples for the documentation.
 
@@ -202,14 +202,14 @@ and modify the file direcly from the terminal. The keywords in this file are bas
     }
 }
 ```
-The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/code_documentation/index.html) by using the [opening the documentation](#opening-the-documentation) tutorial. Remember to save your changes before exiting the editor.
+The *scanning_rate* and the *image_length* are known from the experimental setup, while *height_scaling_factor* is known from the experimental device and acquisition software (check [3] for greater detail). Of course, the *input_file_name* must be the name of a .tiff file in the *input_files/* directory. As a reference to check the exact behavior of the functions involved for the selected keywords, you can open the [📚 code documentation](docs/API_documentation/) by using the [opening the documentation tutorial](#opening-the-documentation). Remember to save your changes before exiting the editor.
 
 3. Now you are ready to run the analysis by executing one of these commands from the *AFM_analysis/* folder:
    - `python3 -m afm_analysis.run_afm_analysis` to run the analysis without generating any .txt results file.
    - `python3 -m afm_analysis.run_afm_analysis --results` run the analysis and generate a .txt results with default name *results.txt*.
    - `python3 -m afm_analysis.run_afm_analysis --results filename.txt` run the analysis and generate a .txt results with name *filename.txt*.
 
-4. You can check the generated results in the *output_files/* folder, which should be equal to the ones presented in the [mesoporous silicon oxide](#mesoporous-silicon-oxide-sio2) example.
+4. You can check the generated results in the *output_files/* folder, which should be equal to the ones presented in the [mesoporous silicon oxide example](#mesoporous-silicon-oxide-sio2).
 
 ### Running the Tests 
 
@@ -234,7 +234,7 @@ to use your default browser. As an example, if you are in the *AFM_analysis/* fo
 ```
 xdg-open docs/API_documentation/index.html
 ```
-or, if you installed snap firefox following the instructions on point 4. in the [getting started](#getting-started) section, you can also execute
+or, if you installed snap firefox following the instructions on point 4. in the [Getting Started](#getting-started) section, you can also execute
 ```
 firefox docs/API_documentation/index.html
 ```
