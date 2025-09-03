@@ -85,7 +85,7 @@ AFM_analysis/
 
     - ***graphics.py*** is the module that contains the functions to manage the .tiff file reading from the *input_files/* folder. It also has the functions that generate and save the output images and the plots inside the *output_files/* folder.
 
-    - ***smart_file.py*** contains the definition of the class *SmartFile*, which is a file-like object that is characterized by an `enabled` internal state. If `enabled = True`, the file object is created and the writing is allowed, if `enabled = False`, the file is not created and it is not possible to write on it. This class is used to create the *results.txt* file only if the user asks to (see ... for greater detail) and thus symplifies the functions inside *image_correction/* and *data_analysis/* that do not need to check for this user-set condition.
+    - ***smart_file.py*** contains the definition of the class *SmartFile*, which is a file-like object that is characterized by an `enabled` internal state. If `enabled = True`, the file object is created and the writing is allowed, if `enabled = False`, the file is not created and it is not possible to write on it. This class is used to create the *results.txt* file only if the user asks to (see step 3. of the [tutorial on how to run the analysis](#running-the-analysis) for greater detail) and thus symplifies the functions inside *image_correction/* and *data_analysis/* that do not need to check for this user-set condition.
 
 - ***docs/*** is the folder that contains the images and files related to the documentation.
 
